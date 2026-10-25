@@ -1,0 +1,319 @@
+/* ==========================================================================
+   STRUCTURAL SKELETON. The design lead replaces the font import and the
+   DESIGN TOKENS block for every report, and may rewrite any component rule
+   below. Nothing here is "the house style": the values shipped are only a
+   working placeholder so the template renders. See references/design-system.md.
+   ========================================================================== */
+
+/* FONT IMPORT: replace with the report's own families (Google Fonts only). */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=block');
+
+/* DESIGN TOKENS: replace per report. */
+:root {
+  --ink: #17212b;          /* body text and strong lines */
+  --ink-2: #45515c;        /* secondary text */
+  --ink-3: #6f7b86;        /* muted text, axis labels */
+  --paper: #ffffff;        /* page */
+  --tint: #eef3f6;         /* fact boxes, neutral fields */
+  --tint-2: #f6f8fa;
+  --rule: #c9d3da;         /* hairlines, axes */
+  --rule-2: #e2e8ec;       /* gridlines */
+  --accent: #e05a26;       /* chapter numbers, glossary letters */
+  --flow-a: #e05a26;  --flow-a-light: #fbe3d8;  --flow-a-text: #c0461a;
+  --flow-b: #138a5f;  --flow-b-light: #d8f1e6;  --flow-b-text: #0f6e4c;
+  --flow-c: #4a3aa7;  --flow-c-light: #e4e1f6;  --flow-c-text: #4a3aa7;
+  --flow-d: #2a78d6;  --flow-d-light: #dbe9fa;  --flow-d-text: #1e5fae;
+  --flow-a-dash: none;     /* line patterns are part of the encoding */
+  --flow-b-dash: 7 4;
+  --flow-c-dash: 1.5 3.5;
+  --flow-d-dash: none;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+  --series-4: #eda100; --series-5: #e87ba4; --series-6: #008300;
+  --muted-fill: #9aa5ae;
+  --sans: 'Archivo', system-ui, sans-serif;     /* headings, labels, figures */
+  --serif: 'Literata', Georgia, serif;          /* body */
+  --body-size: 9.6pt;
+  --body-leading: 1.52;
+  --heading-stretch: 108%;
+  --heading-weight: 800;
+  --main: 118mm;           /* text column */
+  --margin: 44mm;          /* margin-note column; set 0mm for a single-column design */
+  --gutter: 8mm;
+}
+
+@page {
+  size: A4;
+  margin: 20mm 18mm 22mm 22mm;
+  @bottom-left {
+    content: "";
+    font-family: 'Archivo', sans-serif;
+    font-size: 7.5pt;
+    font-stretch: 87%;
+    color: #6f7b86;
+    vertical-align: top;
+    padding-top: 6mm;
+  }
+  @bottom-right {
+    content: counter(page);
+    font-family: 'Archivo', sans-serif;
+    font-size: 8pt;
+    font-weight: 600;
+    color: #17212b;
+    vertical-align: top;
+    padding-top: 6mm;
+  }
+}
+
+@page cover {
+  margin: 0;
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-family: var(--serif);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  font-optical-sizing: auto;
+  hyphens: auto;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+body { margin: 0; }
+p { margin: 0 0 0.62em; orphans: 3; widows: 3; }
+a { color: inherit; text-decoration: none; }
+em, i { font-style: italic; }
+dfn { font-style: italic; font-weight: 600; }
+strong, b { font-weight: 650; }
+
+sup.k {
+  font-family: var(--sans);
+  font-size: 0.62em;
+  font-weight: 600;
+  color: var(--ink-3);
+  font-variant-numeric: lining-nums;
+  margin-left: 0.08em;
+  line-height: 0;
+}
+
+td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
+.nb { white-space: nowrap; }
+
+/* ---------- Cover ---------- */
+
+.cover {
+  page: cover;
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  overflow: hidden;
+  break-after: page;
+  background: var(--paper);
+}
+.cover-diagram { position: absolute; left: 0; right: 0; top: 118mm; width: 210mm; }
+.cover-text { position: absolute; left: 22mm; right: 22mm; top: 30mm; }
+.cover h1 {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: 44pt;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin: 0 0 8mm;
+  hyphens: manual;
+}
+.cover .subtitle { font-family: var(--serif); font-size: 13pt; line-height: 1.4; max-width: 125mm; color: var(--ink-2); }
+.cover .bottom {
+  position: absolute; left: 22mm; right: 22mm; bottom: 20mm;
+  font-family: var(--sans); font-size: 8.5pt; color: var(--ink-2);
+  display: flex; justify-content: space-between;
+  border-top: 0.6pt solid var(--ink); padding-top: 3mm;
+}
+
+/* ---------- Contents & preface ---------- */
+
+.toc { break-after: page; }
+.toc h2, .preface h2 {
+  font-family: var(--sans); font-stretch: 112%; font-weight: 800; font-size: 22pt;
+  margin: 0 0 6mm; letter-spacing: -0.01em;
+}
+.toc ol { list-style: none; padding: 0; margin: 0; }
+.toc li {
+  display: grid; grid-template-columns: 11mm 1fr 14mm; align-items: baseline;
+  padding: 1.5mm 0; border-bottom: 0.5pt solid var(--rule-2); font-family: var(--sans);
+}
+.toc li .nr { font-weight: 700; font-size: 10pt; color: var(--ink-3); font-variant-numeric: lining-nums; }
+.toc li .title { font-size: 11pt; font-weight: 600; }
+.toc li .title small { display: block; font-weight: 400; font-size: 8.5pt; color: var(--ink-2); font-family: var(--serif); margin-top: 0.6mm; }
+.toc li .page { text-align: right; font-weight: 600; font-variant-numeric: lining-nums tabular-nums; }
+
+.preface { break-after: page; }
+.preface .main { max-width: var(--main); }
+.preface h3 { font-family: var(--sans); font-weight: 650; font-size: 10.4pt; margin: 6mm 0 1.5mm; }
+
+/* ---------- Chapters ---------- */
+
+.chapter { break-before: page; padding-right: calc(var(--margin) + var(--gutter)); position: relative; }
+.chapter-top { margin-right: calc(-1 * (var(--margin) + var(--gutter))); margin-bottom: 8mm; }
+.chapter-top .map { display: block; width: 100%; height: auto; margin-bottom: 9mm; }
+.chapter-top .nr {
+  font-family: var(--sans); font-weight: 800; font-stretch: 112%; font-size: 11pt;
+  color: var(--accent); font-variant-numeric: lining-nums; margin-bottom: 1.5mm; display: block;
+}
+.chapter h1 {
+  font-family: var(--sans); font-stretch: var(--heading-stretch); font-weight: var(--heading-weight); font-size: 26pt;
+  line-height: 1.04; letter-spacing: -0.015em; margin: 0 0 5mm; max-width: 150mm; hyphens: manual;
+}
+.lead { font-size: 11.6pt; line-height: 1.45; color: var(--ink-2); max-width: 140mm; margin-bottom: 0; }
+.chapter h2 {
+  font-family: var(--sans); font-weight: 750; font-size: 13.5pt; line-height: 1.2;
+  margin: 7.5mm 0 2.4mm; break-after: avoid; hyphens: manual;
+}
+.chapter h3 {
+  font-family: var(--sans); font-weight: 650; font-size: 10.4pt; line-height: 1.25;
+  margin: 5mm 0 1.5mm; break-after: avoid; hyphens: manual;
+}
+.chapter h2 + p, .chapter h3 + p { break-before: avoid; }
+.chapter ul, .chapter ol:not(.sources) { margin: 0 0 0.8em; padding-left: 1.15em; }
+.chapter li { margin-bottom: 0.3em; }
+.chapter li::marker { color: var(--ink-3); font-family: var(--sans); font-variant-numeric: lining-nums; }
+
+/* ---------- Margin notes ---------- */
+
+aside.term {
+  float: right; clear: right; width: var(--margin);
+  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
+  margin-top: 0.3em; margin-bottom: 4mm;
+  font-family: var(--sans); font-size: 7.6pt; line-height: 1.38; color: var(--ink-2);
+  border-top: 1.4pt solid var(--ink); padding-top: 1.6mm; hyphens: auto; break-inside: avoid;
+}
+aside.term b { display: block; font-size: 8.4pt; font-weight: 700; color: var(--ink); margin-bottom: 0.6mm; }
+aside.term .en { font-style: italic; color: var(--ink-3); font-weight: 400; hyphens: manual; }
+
+/* ---------- Boxes ---------- */
+
+.facts, .note, .lens { display: inline-block; width: 100%; break-inside: avoid; }
+.facts { background: var(--tint); padding: 4mm 5mm 3.5mm; margin: 5mm 0; }
+.facts h4, .note h4, .lens h4 { font-family: var(--sans); font-weight: 700; font-size: 9.2pt; margin: 0 0 2.5mm; }
+.facts dl { display: grid; grid-template-columns: max-content 1fr; column-gap: 5mm; row-gap: 1.6mm; margin: 0; }
+.facts dt { font-family: var(--sans); font-weight: 750; font-size: 12pt; line-height: 1.1; text-align: right; }
+.facts dd { margin: 0; font-size: 8.8pt; line-height: 1.35; align-self: center; }
+.source-line { font-family: var(--sans); font-size: 7pt; color: var(--ink-3); margin-top: 2.5mm; display: block; }
+.note { border-left: 2.2pt solid var(--ink); padding: 0.5mm 0 0.5mm 4.5mm; margin: 5mm 0; }
+.note p:last-child { margin-bottom: 0; }
+.lens { border: 0.8pt solid var(--flow-c); padding: 3.5mm 4.5mm 3mm; margin: 6mm 0; }
+.lens h4 { color: var(--flow-c); }
+.lens p { font-size: 9pt; }
+.lens p:last-child { margin-bottom: 0; }
+
+/* ---------- Figures ---------- */
+
+.fig { margin: 6mm 0; break-inside: avoid; }
+.fig.wide, .table-frame.wide { margin-right: calc(-1 * (var(--margin) + var(--gutter))); }
+.fig svg { display: block; width: 100%; height: auto; overflow: visible; }
+.fig figcaption { font-family: var(--sans); font-size: 8pt; line-height: 1.4; color: var(--ink-2); margin-top: 3mm; max-width: 150mm; }
+.fig figcaption b, table.tab caption b { color: var(--ink); font-weight: 700; margin-right: 0.4em; }
+
+svg text { font-family: var(--sans); fill: var(--ink); }
+svg .t { font-size: 11px; }
+svg .t-s { font-size: 9.5px; fill: var(--ink-2); }
+svg .t-xs { font-size: 9.2px; fill: var(--ink-3); }
+svg .t-bold { font-size: 12px; font-weight: 700; }
+svg .t-h { font-size: 14px; font-weight: 750; font-stretch: var(--heading-stretch); }
+svg .t-num { font-size: 18px; font-weight: 750; }
+svg .t-a { fill: var(--flow-a-text); font-weight: 650; }
+svg .t-b { fill: var(--flow-b-text); font-weight: 650; }
+svg .t-c { fill: var(--flow-c-text); font-weight: 650; }
+svg .t-d { fill: var(--flow-d-text); font-weight: 650; }
+svg .t-white { fill: var(--paper); }
+svg .mid { text-anchor: middle; }
+svg .end { text-anchor: end; }
+svg .halo { paint-order: stroke; stroke: var(--paper); stroke-width: 3px; stroke-linejoin: round; }
+
+svg .box { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+svg .box-tint { fill: var(--tint); stroke: none; }
+svg .box-dark { fill: var(--ink); stroke: none; }
+svg .box-a { fill: var(--flow-a-light); stroke: var(--flow-a); stroke-width: 1.2; }
+svg .box-b { fill: var(--flow-b-light); stroke: var(--flow-b); stroke-width: 1.2; }
+svg .box-c { fill: var(--flow-c-light); stroke: var(--flow-c); stroke-width: 1.2; }
+svg .box-d { fill: var(--flow-d-light); stroke: var(--flow-d); stroke-width: 1.2; }
+svg .box-dashed { fill: none; stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 3; }
+
+svg .l-a { fill: none; stroke: var(--flow-a); stroke-width: 3; stroke-dasharray: var(--flow-a-dash); stroke-linecap: round; stroke-linejoin: round; }
+svg .l-a-thin { fill: none; stroke: var(--flow-a); stroke-width: 1.8; stroke-dasharray: var(--flow-a-dash); stroke-linecap: round; }
+svg .l-b { fill: none; stroke: var(--flow-b); stroke-width: 1.8; stroke-dasharray: var(--flow-b-dash); stroke-linecap: round; }
+svg .l-c { fill: none; stroke: var(--flow-c); stroke-width: 1.8; stroke-dasharray: var(--flow-c-dash); stroke-linecap: round; }
+svg .l-d { fill: none; stroke: var(--flow-d); stroke-width: 2.4; stroke-dasharray: var(--flow-d-dash); stroke-linecap: round; }
+svg .l-ink { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+svg .l-thin { fill: none; stroke: var(--ink-3); stroke-width: 0.8; }
+svg .l-grid { fill: none; stroke: var(--rule-2); stroke-width: 0.8; }
+svg .l-axis { fill: none; stroke: var(--rule); stroke-width: 1; }
+
+svg .f-a { fill: var(--flow-a); }
+svg .f-b { fill: var(--flow-b); }
+svg .f-c { fill: var(--flow-c); }
+svg .f-d { fill: var(--flow-d); }
+svg .f-ink { fill: var(--ink); }
+svg .f-grey { fill: var(--muted-fill); }
+svg .f-tint { fill: var(--tint); }
+svg .f-white { fill: var(--paper); }
+
+svg .s1 { fill: var(--series-1); }
+svg .s2 { fill: var(--series-2); }
+svg .s3 { fill: var(--series-3); }
+svg .s4 { fill: var(--series-4); }
+svg .s5 { fill: var(--series-5); }
+svg .s6 { fill: var(--series-6); }
+
+/* "You are here" chapter map, drawn by build.js. Restyle freely. */
+svg.map .map-link { stroke: var(--rule); stroke-width: 1.6; }
+svg.map .map-link.on { stroke: var(--accent); stroke-width: 2.6; }
+svg.map .map-node { fill: var(--paper); stroke: var(--rule); stroke-width: 1.6; }
+svg.map .map-node.on { stroke: var(--accent); }
+svg.map .map-label { font-size: 10.5px; fill: var(--ink-3); text-anchor: middle; }
+svg.map .map-label.on { font-weight: 700; fill: var(--ink); }
+svg.map .map-band { fill: var(--tint-2); }
+svg.map .map-band.on { fill: var(--flow-a-light); }
+svg.map .map-band-label { font-size: 10.5px; fill: var(--ink-3); }
+svg.map .map-band-label.on { font-weight: 650; fill: var(--flow-a-text); }
+
+/* ---------- Tables ---------- */
+
+.table-frame { margin: 6mm 0; }
+.table-frame:not(:has(tbody tr:nth-child(11))) { break-inside: avoid; }
+table.tab { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 8.2pt; line-height: 1.35; }
+table.tab caption { caption-side: top; text-align: left; font-size: 8.4pt; color: var(--ink-2); padding-bottom: 2.5mm; }
+table.tab thead th { text-align: left; font-weight: 700; border-bottom: 1.2pt solid var(--ink); padding: 1.6mm 2.4mm 1.6mm 0; vertical-align: bottom; }
+table.tab td { padding: 1.8mm 2.4mm 1.8mm 0; border-bottom: 0.5pt solid var(--rule); vertical-align: top; }
+table.tab tr { break-inside: avoid; }
+table.tab td.n, table.tab th.n { text-align: right; white-space: nowrap; }
+table.tab th, table.tab td:first-child { hyphens: manual; }
+table.tab td:first-child { font-weight: 600; min-width: 26mm; }
+table.tab tbody tr:last-child td { border-bottom: 1.2pt solid var(--ink); }
+table.tab tr.sum td { font-weight: 700; border-top: 1pt solid var(--ink); }
+
+/* ---------- Sources ---------- */
+
+.sources { margin-top: 9mm; padding-top: 3mm; border-top: 0.6pt solid var(--rule); }
+.sources h3 { font-family: var(--sans); font-size: 8.5pt; font-weight: 700; margin: 0 0 2mm; color: var(--ink-2); }
+ol.sources {
+  font-family: var(--sans); font-size: 6.7pt; line-height: 1.26; color: var(--ink-2);
+  padding-left: 5.5mm; margin: 0; columns: 2; column-gap: 7mm;
+  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
+}
+ol.sources li { margin-bottom: 0.7mm; break-inside: avoid; overflow-wrap: anywhere; hyphens: none; }
+ol.sources li::marker { font-variant-numeric: lining-nums tabular-nums; font-weight: 600; }
+
+/* ---------- Glossary ---------- */
+
+.glossary dl { margin: 0; columns: 2; column-gap: 8mm; margin-right: calc(-1 * (var(--margin) + var(--gutter))); }
+.glossary dt { font-family: var(--sans); font-weight: 700; font-size: 8.8pt; break-after: avoid; margin-top: 2.6mm; }
+.glossary dt .en { font-weight: 400; font-style: italic; color: var(--ink-3); font-size: 8pt; }
+.glossary dd { margin: 0.4mm 0 0; font-size: 8.4pt; line-height: 1.4; break-before: avoid; break-inside: avoid; }
+.glossary .letter { font-family: var(--sans); font-weight: 800; font-size: 13pt; color: var(--accent); margin-top: 5mm; break-after: avoid; }

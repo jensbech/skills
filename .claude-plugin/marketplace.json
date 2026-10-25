@@ -1,0 +1,22 @@
+{
+  "name": "pers-skills",
+  "owner": {
+    "name": "Jens"
+  },
+  "metadata": {
+    "description": "Personal agent skills, published for reuse.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "report-skills",
+      "description": "Researched, designed and independently checked PDF reports, from a 10-page briefing to a 150-page handbook.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/thorough-report"
+      ],
+      "license": "CC0-1.0"
+    }
+  ]
+}
