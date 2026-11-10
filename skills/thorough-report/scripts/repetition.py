@@ -53,6 +53,7 @@ def clean_term(t):
 
 def prose(s):
     s = re.sub(r"<svg[\s\S]*?</svg>", " ", s)
+    s = re.sub(r'<div class="(?:check|answers)">[\s\S]*?</div>', " ", s)
     s = re.sub(r'<div class="(?:sources|kildeseksjon)">[\s\S]*?</div>\s*</section>', " ", s)
     s = re.sub(r"<table[\s\S]*?</table>", " ", s)
     s = re.sub(r"<sup[^>]*>[\s\S]*?</sup>", "", s)
@@ -81,6 +82,7 @@ Chapter Figure Table kW MW GW kWh MWh GWh TWh Norge Norway Norwegian""".split())
 
 def paragraphs(s):
     s = re.sub(r"<svg[\s\S]*?</svg>", " ", s)
+    s = re.sub(r'<div class="(?:check|answers)">[\s\S]*?</div>', " ", s)
     s = re.sub(r"<aside[\s\S]*?</aside>", " ", s)
     s = re.sub(r"<sup[^>]*>[\s\S]*?</sup>", "", s)
     s = re.sub(r'<div class="(?:sources|kildeseksjon)">[\s\S]*$', " ", s)

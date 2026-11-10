@@ -198,9 +198,9 @@ aside.term .en { font-style: italic; color: var(--ink-3); font-weight: 400; hyph
 
 /* ---------- Boxes ---------- */
 
-.facts, .note, .lens { display: inline-block; width: 100%; break-inside: avoid; }
+.facts, .note, .lens, .check { display: inline-block; width: 100%; break-inside: avoid; }
 .facts { background: var(--tint); padding: 4mm 5mm 3.5mm; margin: 5mm 0; }
-.facts h4, .note h4, .lens h4 { font-family: var(--sans); font-weight: 700; font-size: 9.2pt; margin: 0 0 2.5mm; }
+.facts h4, .note h4, .lens h4, .check h4, .answers h4 { font-family: var(--sans); font-weight: 700; font-size: 9.2pt; margin: 0 0 2.5mm; }
 .facts dl { display: grid; grid-template-columns: max-content 1fr; column-gap: 5mm; row-gap: 1.6mm; margin: 0; }
 .facts dt { font-family: var(--sans); font-weight: 750; font-size: 12pt; line-height: 1.1; text-align: right; }
 .facts dd { margin: 0; font-size: 8.8pt; line-height: 1.35; align-self: center; }
@@ -211,6 +211,11 @@ aside.term .en { font-style: italic; color: var(--ink-3); font-weight: 400; hyph
 .lens h4 { color: var(--flow-c); }
 .lens p { font-size: 9pt; }
 .lens p:last-child { margin-bottom: 0; }
+.check { border-top: 1.4pt solid var(--ink); border-bottom: 0.6pt solid var(--ink); padding: 3mm 0 2.5mm; margin: 7mm 0 5mm; }
+.check ol, .answers ol { margin: 0; padding-left: 5mm; }
+.check li { font-size: 9.4pt; margin-bottom: 1.4mm; }
+.answers { margin-top: 4mm; break-inside: avoid; }
+.answers li { font-family: var(--sans); font-size: 7.4pt; line-height: 1.35; color: var(--ink-2); margin-bottom: 0.8mm; }
 
 /* ---------- Figures ---------- */
 

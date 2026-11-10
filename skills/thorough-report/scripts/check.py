@@ -2,7 +2,7 @@
 """Mechanical checks for a thorough-report build. Report-only; review hits by eye before editing
 (substring matches can be false positives, e.g. 'landskap' inside 'utenlandskapasitet').
 
-Usage: python3 check.py <report-dir> [--lang en|nb] [--pdf <file.pdf>] [--extra "word1,word2"]
+Usage: python3 check.py <report-dir> [--lang en|nb] [--pdf <file.pdf>] [--extra "word1,word2"] [--require-check]
 """
 import argparse
 import glob
@@ -45,6 +45,7 @@ def main():
     ap.add_argument("--lang", default="en")
     ap.add_argument("--pdf")
     ap.add_argument("--extra", default="")
+    ap.add_argument("--require-check", action="store_true")
     a = ap.parse_args()
     lang = a.lang if a.lang in BANNED else "en"
     banned = BANNED[lang] + ("|" + "|".join(map(re.escape, a.extra.split(","))) if a.extra else "")
@@ -59,7 +60,7 @@ def main():
         dashes = len(re.findall(r"\s[–—]\s", t))
         openers = len(re.findall(OPENERS.get(lang, OPENERS["en"]), t))
         meta = sorted(set(m.group(0) for m in re.finditer(META.get(lang, META["en"]), t, re.I)))
-        bold = len(re.findall(r"<(?:b|strong)>", re.sub(r'<(aside|div class="(?:facts|note|lens)")[\s\S]*?</(?:aside|div)>|<caption>[\s\S]*?</caption>|<figcaption>[\s\S]*?</figcaption>|<th[\s\S]*?</th>', "", html)))
+        bold = len(re.findall(r"<(?:b|strong)>", re.sub(r'<(aside|div class="(?:facts|note|lens|check|answers)")[\s\S]*?</(?:aside|div)>|<caption>[\s\S]*?</caption>|<figcaption>[\s\S]*?</figcaption>|<th[\s\S]*?</th>', "", html)))
         narrow = html.count("&#8239;") + html.count(" ")
 
         caps = re.findall(rf"<b>((?:{fig}|{tab}) \d+\.\d+)</b>", html)
@@ -67,7 +68,12 @@ def main():
         body_wo_caps = re.sub(r"<[^>]+>", " ", body_wo_caps).replace("&nbsp;", " ")
         unref = [c for c in caps if not re.search(re.escape(c).replace(r"\ ", r"\s+"), body_wo_caps, re.I)]
 
-        n_sources = len(re.findall(r"<li>", html.split('class="sources"')[-1])) if 'class="sources"' in html else 0
+        src = re.search(r'<ol class="sources">([\s\S]*?)</ol>', html)
+        n_sources = len(re.findall(r"<li\b", src.group(1))) if src else 0
+        box = lambda c: re.search(rf'<div class="{c}">([\s\S]*?)</div>', html)
+        n_q = len(re.findall(r"<li\b", box("check").group(1))) if box("check") else 0
+        n_a = len(re.findall(r"<li\b", box("answers").group(1))) if box("answers") else 0
+        is_appendix = bool(re.search(r"data-appendix=", html))
         cites = [int(x) for grp in re.findall(r'<sup class="k">([\d,\s–-]+)</sup>', html) for x in re.findall(r"\d+", grp)]
         bad_cites = sorted(set(c for c in cites if c > n_sources or c < 1))
         unused = sorted(set(range(1, n_sources + 1)) - set(cites)) if n_sources else []
@@ -81,6 +87,8 @@ def main():
         if narrow: print(f"  narrow no-break spaces (&#8239;): {narrow}  -> run normalize_numbers.py")
         if unref: print("  never referenced in text:", ", ".join(unref))
         if bad_cites: print("  citations out of range:", bad_cites)
+        if n_q != n_a: print(f"  check yourself: {n_q} questions but {n_a} answers")
+        if a.require_check and not n_q and not is_appendix: print("  no check-yourself box")
         if unused: print("  sources never cited in text (may back figure/table source lines):", unused)
 
     if a.pdf:

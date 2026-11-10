@@ -6,7 +6,7 @@ There is **no house style**. The CSS in `assets/style.css` is a structural skele
 
 ### The design dials
 
-Decide every dial for the subject at hand. Write the decisions into `report/DESIGN.md` (the design lead does this; see SKILL.md Phase 2).
+Decide every dial for the subject at hand. The design lead fixes them per direction; the orchestrator writes the chosen set into `report/DESIGN.md`.
 
 | Dial | Questions to answer | Range of answers (illustrative, not a menu) |
 |---|---|---|
@@ -40,8 +40,8 @@ Also avoid the generic AI looks regardless of subject:
 ### How to arrive at the design
 
 1. **Immerse briefly.** List 10–15 concrete artefacts from the subject's world (instruments, documents, maps, signage, materials, uniforms, packaging, historical prints). Distinctive design comes from these, not from abstract adjectives.
-2. **Generate three genuinely different directions.** Each fixes all 8 dials and has a one-line concept («a field naturalist's notebook», «a 1970s transit authority manual», «an engineer's blueprint set»). The three must differ from each other on at least 5 dials.
-3. **Render specimens.** For each direction, adapt `style.css` and a cover, and render 2–3 specimen pages: the cover, a chapter opener with a figure, and a page with a table, a fact box and margin notes.
+2. **Generate the directions asked for** (one to three, by tier). Each fixes all 8 dials and has a one-line concept («a field naturalist's notebook», «a 1970s transit authority manual», «an engineer's blueprint set»). Directions differ from each other on at least 5 dials, and a single direction still has to pass the novelty rule.
+3. **Render specimens.** For each direction, adapt `style.css` and a cover, and render 2–3 specimen pages: the cover, a chapter opener with a figure, and a page with a table, a fact box, margin notes and a check-yourself box.
 4. **Pick on evidence.** Choose by legibility of long text, fit to the subject, how well the flows read in a figure, and memorability. Don't pick by safety. Record the rationale in DESIGN.md.
 5. **Quality floor** regardless of boldness:
    - body text 9–11 pt with comfortable leading;
@@ -51,12 +51,12 @@ Also avoid the generic AI looks regardless of subject:
    - chart series that never collide with flow meanings;
    - every character of the output language (Nordic letters, accents, other scripts) supported by the chosen fonts.
 
-   If the `dataviz` skill is available, validate the categorical palette with its script. If the `frontend-design` skill is available, load it in the design lead for typography and layout judgment.
+   If the `dataviz` skill is available, validate the categorical palette with its script.
 6. **Spend boldness in one place.** One memorable element (usually the cover and the figure style), with everything else quiet and disciplined.
 
 ### What stays fixed across designs
 
-To keep the pipeline working, keep the **class names** (`chapter`, `chapter-top`, `lead`, `term`, `facts`, `note`, `lens`, `fig`, `wide`, `table-frame`, `tab`, `sources`, `glossary`, `l-a…l-d`, `t-*`, `box-*`, `f-*`, `s1…s6`, `map-*`) and the viewBox widths 470/680. Values, fonts, layout and even what a class looks like (a `.term` can be an inline index card in a single-column design) are free. The flow slots `a–d` are semantic: DESIGN.md and WRITING_GUIDE.md say what each one means in this report.
+To keep the pipeline working, keep the **class names** (`chapter`, `chapter-top`, `lead`, `term`, `facts`, `note`, `lens`, `check`, `answers`, `fig`, `wide`, `table-frame`, `tab`, `sources`, `glossary`, `l-a…l-d`, `t-*`, `box-*`, `f-*`, `s1…s6`, `map-*`) and the viewBox widths 470/680. Values, fonts, layout and even what a class looks like (a `.term` can be an inline index card in a single-column design) are free. The flow slots `a–d` are semantic: DESIGN.md and WRITING_GUIDE.md say what each one means in this report.
 
 Note: `@page` margin boxes (footer and page number) don't see CSS custom properties, so set their font and colour literally in `style.css`.
 
@@ -73,6 +73,8 @@ The skeleton ships A4, margins 20/18/22/22 mm, a 118 mm main column and a 44 mm 
 | Key figures | `div.facts` > `h4`, `dl` (`dt` number, `dd` text), `span.source-line` |
 | Note box | `div.note` > `h4`, `p` |
 | Reader-lens box | `div.lens` > `h4`, `p` |
+| Check yourself | `div.check` > `h4`, `ol` > `li` (before the sources) |
+| Answers | `div.answers` > `h4`, `ol` > `li` (after the sources) |
 | Figure | `figure.fig(.wide)` > `svg`, `figcaption` (`b` number), `span.source-line` |
 | Table | `div.table-frame(.wide)` > `table.tab` (`caption`, `thead`, `tbody`, `td.n` numeric), `span.source-line` |
 | Sources | `div.sources` > `h3`, `ol.sources` > `li` |
@@ -123,28 +125,8 @@ The example is illustrative; each report defines its own stages.
 ## 5. Cover and preface
 
 - **Cover:** designed per report (see the cover concept dial). It needs the title, a one-sentence subtitle, the audience and date, and one strong image in the subject's vernacular. `assets/cover.html` is only a placeholder. Check that no label collides with a line, and that nothing touches the page edges unless it's deliberately full bleed.
-- **Preface** («Before you begin»): who it's for, how chapters build on each other, how the map works, a legend of the line styles (an SVG at 470 width, using `t` not `t-s` so it's legible), «about the numbers» (date anchor, sources per chapter, check fresh sources before decisions), and a plain statement that it was compiled by Claude from public sources and not reviewed by domain experts.
+- **Preface** («Before you begin»): who it's for, what the reader will be able to do afterwards, the reading routes and how to use the check-yourself questions, how chapters build on each other, how the map works, a legend of the line styles (an SVG at 470 width, using `t` not `t-s` so it's legible), «about the numbers» (date anchor, sources per chapter, check fresh sources before decisions), and a plain statement that it was compiled by Claude from public sources and not reviewed by domain experts.
 
 ## 6. Charts
 
 Follow the dataviz principles: choose the form by the job (magnitude → bars, change over time → lines or columns, composition → stacked bar, single number → fact box). Use one y-axis, a zero baseline for bars, equal intervals for equal time spans, direct labels, a legend for 2+ series, series colours in fixed order, text in ink colours, and mark conceptual charts as conceptual in the caption. Never let a series colour carry a flow meaning it doesn't have. If a chart uses orange or green for something that isn't flow A or B, recolour it (`s1`, `s4` or `f-grey`).
-
-## 7. Build and inspection commands
-
-```bash
-# build (two-pass TOC); prints chapter → page map
-PW_PATH=<scratch>/render/node_modules/playwright node <skill>/scripts/build.js <report-dir>
-
-# scratch build that doesn't overwrite the main PDF
-OUT_PDF=<scratch>/test.pdf PW_PATH=… node <skill>/scripts/build.js <report-dir>
-
-# overview contact sheets (8×3 pages per image)
-pdftoppm -r 50 -png <pdf> <dir>/p && PW_PATH=… node <skill>/scripts/contact-sheet.js <dir> <dir>/sheet
-
-# detail view
-pdftoppm -r 110 -png -f 7 -l 7 <pdf> <dir>/z
-
-# mechanical checks
-python3 <skill>/scripts/check.py <report-dir> --lang nb --pdf <pdf>
-python3 <skill>/scripts/normalize_numbers.py <report-dir> --lang nb
-```

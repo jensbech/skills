@@ -1,185 +1,246 @@
-# Agent prompt templates
+# Agent prompts
 
-Fill in the `{PLACEHOLDERS}`. Common ones:
+One prompt per role. Fill in the `{PLACEHOLDERS}`, set the Agent tool's `model` to the role's class (SKILL.md, "The team"), and launch every agent of a wave in one message with `run_in_background: true`.
 
 | Placeholder | Meaning |
 |---|---|
 | `{SKILL}` | absolute path of this skill folder |
 | `{CWD}` | absolute working directory |
-| `{TITLE}` | research title (folder name under research_notes/) |
+| `{NOTES}` | `{CWD}/research_notes/<title>` |
 | `{REPORT}` | `{CWD}/report` |
-| `{SCRATCH}` | session scratchpad (contains `render/` and `aiw/` from setup.sh) |
+| `{GUIDE}` | `{REPORT}/WRITING_GUIDE.md` |
+| `{SCRATCH}` | session scratchpad (holds `render/` and `aiw/` from setup.sh) |
+| `{DESIGN_LOG}` | the design log path printed by setup.sh |
 | `{PW}` | `{SCRATCH}/render/node_modules/playwright` |
 | `{LANG}` | output language, e.g. "British English", "Norwegian bokmål" |
 | `{READER}` | one-sentence reader profile |
 | `{DATE}` | today's date |
 
-All agents are `subagent_type: general-purpose`. Researchers run in the foreground or in parallel in the background. All other agents run in the background (`run_in_background: true`), launched together when their files don't overlap.
+Language rules, the teach-once rules, components and figure rules live in the writing guide, which every prose-touching agent reads first. The prompts below add only what is specific to the role and to the agent's own files.
 
 ---
 
-## Researcher
+## Researcher · standard · wave 1
 
 ```
-Research {SUBTOPIC} for a newcomer: {READER}.
+Research {SUBTOPIC} for a report that will teach {SUBJECT} to {READER}. Your note is the only factual basis the chapter writers may use.
 
-Objective: a dense, fact-rich note covering {WHAT THE CHAPTERS WILL NEED}, with native terminology ({LANG} term next to each English concept), numbers, and material suitable for diagrams and tables in an explanatory paper.
+First read {SKILL}/references/researcher.md and follow its method and note format.
 
 Key questions:
-- {specific question 1, with numbers wanted and years}
-- {specific question 2 — name concrete entities, laws, dates to verify}
-- {… 5–9 questions; include "verify X" for things you're unsure of}
+- {5–9 specific questions: name the numbers and years wanted, and the entities, laws and dates to verify}
+- {"verify X" for each assumption the orchestrator is unsure of}
 
-Suggested sources:
-- {primary authorities, regulators, statistics offices, official company pages, trade press}
+Likely sources: {primary authorities, regulators, statistics offices, official company pages, trade press}
 
-Constraints:
-- Current as of {DATE}; date every number and flag older info. Cite a URL for every fact. Mark claims seen only in search-result snippets as lower confidence. Separate inferences from facts.
-- Suggest 2–4 diagrams (boxes, arrows, axes) based on what you find.
+Current as of {DATE}. Terms in {LANG} next to the English ones.
 
-Save your output notes to {CWD}/research_notes/{TITLE}/{NN_slug}.md
-
-As a first step, read {SKILL}/references/researcher.md for how to conduct and write up research.
+Write the note to {NOTES}/{NN_slug}.md.
+Return: the five most important findings, every correction to this brief, notable gaps and conflicts, and the file path.
 ```
 
 ---
 
-## Design lead (Phase 2; runs while research is underway)
+## Design lead · deep · wave 1
 
 ```
-You are the design lead for a long-form PDF report: "{REPORT TITLE}", in {LANG}, about {SUBJECT}, for {READER}. Your job is to invent a design system that is novel, distinctive and grown from this subject, so that someone flipping through could guess the subject from the design alone. There is no house style.
+You are the design lead for "{REPORT TITLE}", a long-form PDF in {LANG} about {SUBJECT} for {READER}. Invent a design system grown from this subject, so that someone flipping through could guess the subject before reading a word.
 
-Read first: {SKILL}/references/design-system.md (the dials, the novelty rule, the quality floor, the fixed class names), {SKILL}/artifacts/design-log.md (previous designs, may be empty; yours must differ from each on at least 5 of 8 dials), {SKILL}/assets/style.css (structural skeleton with placeholder tokens), {SKILL}/assets/cover.html, {SKILL}/assets/example-chapter.html, and {REPORT}/report.config.json. If the skills `frontend-design` and `dataviz` are available, load them and follow their guidance.
+Read {SKILL}/references/design-system.md and follow "How to arrive at the design" step by step; it holds the dials, the novelty rule, the quality floor and the class names that must stay fixed. Then read {DESIGN_LOG} (earlier designs; yours must differ from each on at least 5 of 8 dials), the skeleton in {SKILL}/assets/ (style.css, cover.html, example-chapter.html) and {REPORT}/report.config.json. Load the `frontend-design` and `dataviz` skills if you have them.
 
-Subject context from the orchestrator: {3–6 LINES: what flows through the subject, its main stages (for the chapter-opener device), notable artefacts or visual traditions you already know of}.
+Subject context: {3–6 lines: what flows through the subject, its main stages, artefacts or visual traditions already known}.
 
-Steps:
-1. List 10–15 concrete artefacts from the subject's world (instruments, documents, maps, signage, materials, eras).
-2. Write three directions in {REPORT}/design/DIRECTIONS.md. Each has a one-line concept and fixes all 8 dials (vernacular, flows/encodings, palette with hex values, typography from Google Fonts, page grid, chapter opener device, component treatment, cover concept). The three must differ from each other on at least 5 dials, and each must differ from every design-log entry on at least 5.
-3. For each direction, make {REPORT}/design/<direction>/style.css (adapting the skeleton: font import, tokens, and component rules as needed; keep class names), a cover.html with a real cover diagram in that vernacular, and a specimen chapter (adapted from example-chapter.html, with one real-looking figure using the flows, a table, a fact box, margin notes or their equivalent, and a lens box). Render cover + 2 specimen pages per direction to PNG with Playwright ({PW}; you may copy {SKILL}/scripts/build.js and point it at a design/<direction>/ folder with its own report.config.json, or render directly with page.pdf + pdftoppm). Look at every PNG and fix problems.
-4. Check the quality floor: body 9–11 pt, 60–80 characters per line, contrast ≥ 4.5:1 for text, flows distinguishable in greyscale (pattern as well as colour), fonts that cover {LANG} characters.
-5. Recommend one direction with a rationale (legibility, fit to the subject, how well the flows read in figures, memorability). Don't pick the safest one.
+Produce {N} direction(s):
+- {REPORT}/design/DIRECTIONS.md: per direction, a one-line concept and all 8 dials.
+- {REPORT}/design/<direction>/: style.css, cover.html with a real cover diagram, and a specimen chapter with one figure that uses the flows, a table, a key-figures box, margin notes, a lens box and a check-yourself box.
+- PNGs of the cover and two specimen pages per direction, rendered with Playwright ({PW}). Look at every PNG and fix what is wrong before returning.
 
-Return: the three one-line concepts, your recommendation, and the absolute paths of the PNGs for each direction. Don't touch {REPORT}/chapters/ or {REPORT}/style.css. The orchestrator installs the chosen design.
-```
-
----
-
-## Writer (1–2 chapters each)
-
-```
-You are writing {one/two} chapter(s) of a {LANG} explanatory PDF report, "{REPORT TITLE}", for {READER}.
-
-FIRST read, in full: {REPORT}/WRITING_GUIDE.md (binding style, language, component and figure guide), then {REPORT}/style.css, {REPORT}/chapters/00_example.html (component example), {REPORT}/DESIGN.md and {REPORT}/cover.html (illustration style).
-Anti-AI-writing: if a skill named `avoid-ai-writing` is available to you, invoke it with the Skill tool before writing; otherwise read {SCRATCH}/aiw/avoid-ai-writing/SKILL.md and references/patterns.md. Apply the patterns adapted to {LANG} together with the banned-phrase list in WRITING_GUIDE.md. Before returning, audit your own prose against them (detect pass) and fix what you find. Then read the research notes in {CWD}/research_notes/{TITLE}/ — primary for you: {NOTES}; skim {OTHER NOTES} for context and to avoid contradicting other chapters. Use only facts from the notes.
-
-Write {REPORT}/chapters/{NN_slug}.html — Chapter {N}, id="k{NN}", data-map="{KEY}". Working title "{TITLE}" (you may improve it; no "X: Y" titles). About {WORDS} words. Depth tier: {TIER}. Stay within ±15 % of the word target; at Briefing/Standard, prioritise mechanisms, key numbers and what is changing now over background, and use fewer, stronger figures. Contents:
- - {section-by-section bullets: what to explain, which numbers, which comparisons}
- - {Figure N.1: what it shows, full width or column, conceptual vs data}
- - {Table N.1: columns}
- - Fact box, {4–8} margin notes, at most one "{LENS BOX NAME}" box if natural, sources.
-
-Registry (terms, stories, number backstories): you are the home chapter for {HOME ROWS}. Explain and tell only those in full. Your chapter also touches these rows, whose home is elsewhere: {NEIGHBOUR ROWS WITH THEIR CHAPTERS}. For each of them, write the one sentence your argument needs plus «see chapter N»: no margin note, no definition sentence, no dates-and-numbers retelling of the story, no source caveats for the number. Any other registry term you use plainly. Your lead names what this chapter builds on (with chapter numbers) instead of re-teaching it.
-{IF BRACKET CHAPTER: paste its contract from {SKILL}/references/repetition.md here.}
-Follow WRITING_GUIDE strictly, especially the anti-AI-writing rules and the figure rules. Render-check your figures on your own test page in your own scratch folder (HTML linking file://{REPORT}/style.css, rendered with Playwright from {PW}); look at the PNGs and fix collisions. Never run the main build. Don't edit other files. Return a short summary: sections, figures, tables, and every fact you were unsure of or left out.
+Leave {REPORT}/chapters/ and {REPORT}/style.css alone; the orchestrator installs the chosen design.
+Return: each direction's one-line concept, your recommendation with its reasons (legibility of long text, fit, how the flows read, memorability), and the absolute PNG paths.
 ```
 
 ---
 
-## Glossary (after all chapters exist)
+## Source checker · fast · wave 2 (one per note)
 
 ```
-You are writing the glossary appendix for the {LANG} PDF report "{REPORT TITLE}".
-Read {REPORT}/WRITING_GUIDE.md and style.css (.glossary rules), then all files in {REPORT}/chapters/.
-Anti-AI-writing: if a skill named `avoid-ai-writing` is available to you, invoke it with the Skill tool before writing; otherwise read {SCRATCH}/aiw/avoid-ai-writing/SKILL.md and references/patterns.md. Apply the patterns adapted to {LANG} together with the banned-phrase list in WRITING_GUIDE.md. Before returning, audit your own prose against them (detect pass) and fix what you find. Collect every term in margin notes (aside.term), every <dfn>, and every abbreviation.
-Write {REPORT}/chapters/90_glossary.html as <section class="chapter glossary" id="appendix-a" data-appendix="A" data-short="…"> with a chapter-top header and a <dl> of <div class="letter">X</div>, <dt>Term <span class="en">english/expansion</span></dt>, <dd>1–3 sentence definition consistent with the chapters. See chapter N.</dd> where N is the term's HOME chapter from the registry in WRITING_GUIDE.md. Alphabetical per {LANG} collation. 100–160 entries. No new facts.
-Do not edit chapter files. In your final summary, list every INCONSISTENCY you saw between chapters (spelling variants, same number stated differently, different definitions, wrong chapter pointers) with file and quote.
-```
+Check whether the sources cited in one research note say what the note claims.
 
----
+Note: {NOTES}/{NN_slug}.md. For each claim under "Cited findings" that carries a number, a date or a proper name, fetch the cited URL and compare. Start with these: {KEY CLAIMS the report will lean on}. Then continue through the note, up to about {40} claims.
 
-## Consolidation editor (after all chapters exist; ONE agent, owns ALL chapter files while it runs)
+Write {NOTES}/checks/{NN}.md as one table:
+| Claim as the note states it | URL | Verdict | What the page says (quote, 25 words at most) |
+Verdicts: supported / differs / not on page / unreachable.
 
-Repetition is a whole-report problem, so it must be fixed by one agent that reads everything. Parallel editors can't see it.
-
-```
-You are the consolidation editor for the {LANG} PDF report "{REPORT TITLE}". Several writers wrote the chapters in parallel without seeing each other, so the same terms are re-explained and the same topics re-told in several chapters. Your single job is to remove that repetition, so the report reads as if one author wrote it in order. You own all files in {REPORT}/chapters/ while you work (no one else is editing them).
-
-Read: {SKILL}/references/repetition.md (recipe and gates); {REPORT}/WRITING_GUIDE.md (especially the registry with home chapters and the bracket-chapter contracts); the repetition report {REPORTFILE} (from scripts/repetition.py: §1 terms defined in several chapters, §2 near-duplicate sentences, §3 repeated facts, §4 reworded re-explanations, §5 retold passages, the same story with the same numbers, dates and names in several chapters); then ALL chapters in order, start to finish, as a reader would. Anti-AI-writing: if a skill named `avoid-ai-writing` is available, invoke it; otherwise read {SCRATCH}/aiw/avoid-ai-writing/references/patterns.md, so your edits stay clean.
-
-Work in this order: §5 retold passages (largest gain), §1, §4, §2. Then reread the bracket chapters (overview/summary, history, future, reader-specific) against everything before them and hold them to their contracts.
-
-For every repeated term, story or number backstory (read each §5 cluster before acting: some share figures for unrelated reasons):
-1. Decide the home chapter (the registry's choice; if missing, the chapter where a reader in order first needs the full explanation). Make sure the home chapter has the best, complete explanation; merge in any useful detail that only another chapter had.
-2. In every other chapter: delete the margin note for that term; turn definition sentences into plain use of the term; reduce re-told topics to the one sentence the local argument needs plus «see chapter N»; delete near-duplicate sentences or rewrite them so they add something new.
-3. Keep each chapter readable on its own: if removing an explanation leaves a sentence unclear, add a short apposition (≤ 8 words) or a chapter reference instead.
-4. Repeated key numbers are fine when the local argument uses them; remove repeated background/method/caveats around them.
-Don't change facts. Don't touch SVG figures or source lists except to remove sources that are no longer cited anywhere in that chapter (then renumber that chapter's citations). Keep HTML valid. Don't run the build.
-
-When done, run: python3 {SKILL}/scripts/repetition.py {REPORT} --out {SCRATCH}/repetition-after.md and check the gates: §1 empty or only deliberate cases; no §2 pair at 0.70 or above; no §5 cluster spanning 3+ chapters; each remaining 2-chapter §5 cluster is one full telling plus at most two sentences elsewhere. Iterate until they pass. Report: per chapter, what you cut or moved (counts plus the notable items), before/after counts for §1, §2, §4 and §5, any gate you consider a deliberate exception and why, and any row whose home you changed (so the orchestrator can update the registry and glossary).
+When a page is unreachable, try one search for the same publisher's current page and note the new URL. Otherwise don't look for replacement sources, and don't edit the note.
+Return: the count per verdict, and every "differs" and "not on page" row in full.
 ```
 
 ---
 
-## Editor (QA round 1; ~4 chapters each, disjoint)
+## Writer · deep · wave 3 (one chapter each)
 
 ```
-You are an independent editor and fact-checker for the {LANG} PDF report "{REPORT TITLE}". Your files (only edit these): {FILES}.
-Read: {REPORT}/WRITING_GUIDE.md; all notes in {CWD}/research_notes/{TITLE}/. Anti-AI-writing: if a skill named `avoid-ai-writing` is available, invoke it with the Skill tool and use its edit mode on your files; otherwise read {SCRATCH}/aiw/avoid-ai-writing/SKILL.md and references/patterns.md and apply them adapted to {LANG}.
-Tasks:
-1. FACT CHECK every number, date, name and claim against the notes. Fix contradictions; soften or remove unsupported claims (unless certain general knowledge). Check citation numbers point to supporting sources; no invented URLs; check arithmetic in examples.
-2. CONSISTENCY — enforce these resolutions everywhere in your files: {KNOWN CONFLICTS LIST}. Skim the other chapters read-only and report contradictions.
-3. CROSS-REFERENCES — final chapter numbers: {CHAPTER LIST}. Make every "chapter N" correct; replace vague pointers with chapter numbers.
-4. NO NEW REPETITION — the consolidation editor has already removed cross-chapter repetition. Don't add margin notes or definition sentences for terms whose home (per the registry in WRITING_GUIDE.md) is another chapter. If you find remaining re-explanations, reduce them as the guide says.
-5. LANGUAGE — audit for AI-writing patterns (banned list in the guide, reflexive triplets, "not X but Y" punchlines, summary closers, inflated significance, staccato fragments, uniform paragraphs, bold in body, prose dashes, translationese). Minimal edits; preserve meaning and voice. Normalise spelling variants per the guide.
-6. Don't alter SVG geometry (text fixes of same or shorter length are OK). Keep HTML valid. Don't run the build.
-Report: factual corrections (before → after), unresolved doubts, contradictions in other chapters, count of language edits per file.
-```
+You are writing chapter {N} of "{REPORT TITLE}", a {LANG} report that teaches {SUBJECT} to {READER}.
 
----
+Read {GUIDE} first and do what "Before you write or edit" says. Your primary notes: {NOTES FILES}. Skim {OTHER NOTES} so you don't contradict other chapters.
 
-## Visual reviewer (report-only)
+Your file: {REPORT}/chapters/{NN_slug}.html — id="k{NN}", data-map="{KEY}". Working title "{TITLE}"; improve it if you can. {WORDS} words, within 15 %.
 
-```
-You are an independent visual/layout reviewer for "{PDF PATH}" built from {REPORT}/chapters/*.html with {REPORT}/style.css. REVIEW ONLY — do not edit files in {REPORT}. Text is being edited concurrently, so focus on things that persist: figures (inline SVG), tables, boxes, cover, contents, margin notes, global typography.
-Render pages with `pdftoppm -r 110 -png -f N -l M` into {SCRATCH}/vqa/ and view them; zoom figures at -r 160. Use `pdftotext -layout` to locate captions.
-Check: SVG text overlapping lines/shapes/text, clipped labels, labels below ~6.5 pt effective, boxes too narrow, wrong arrows, missing legends, flow colours used against the convention ({FLOW CONVENTION}), misleading scales (no zero, uneven time axes); tables with ugly wrapping, numbers split across lines, header separated from body; margin notes overlapping or far from their term; stranded headings; near-empty pages; caption numbering; hyphenation and character problems.
-For each problem: page, figure/table, file, locator (SVG <text> content or caption), what's wrong, concrete fix (coordinates). Prioritise P0/P1/P2. Optionally write a small overlap-check script with Playwright ({PW}) and leave it in {SCRATCH}/vqa/tools/ for reuse.
-```
+After this chapter the reader can: {1–3 OUTCOMES}.
 
----
+Sections:
+- {per section: what to explain, which numbers, which comparison}
+Figures and tables:
+- {Figure N.1: what it shows, column or wide, conceptual or data}
+- {Table N.1: columns}
+Running case: {what the case meets in this chapter and what to show}.
+Misconception to correct: {one or two, or "none"}.
+Check yourself: {N} questions with answers.
 
-## Figure fixer
+Home rows (explain in full, here only): {ROWS}.
+Neighbour rows (homed elsewhere; treat as the guide's "Teach once" table says): {ROWS WITH THEIR CHAPTERS}.
+{BRACKET CHAPTERS ONLY — its contract, pasted in full.}
 
-```
-You are fixing figure (inline SVG) and table issues in {REPORT}/chapters/*.html (not cover/preface/style.css/build). Read WRITING_GUIDE.md and style.css first. {NOTE ANY CSS CHANGES, e.g. "t-xs grew from 8.5 to 9.2px; new class .halo"}.
-Fix these items (coordinates from an independent review; verify by reading the source before editing): {NUMBERED LIST}.
-Verify with {SCRATCH}/vqa/tools/ (if present) and by rendering each changed figure to PNG on a private test page and looking at it. Don't run the main build. Keep HTML valid; don't change text except as needed (update captions if you change colours).
-Report per figure what changed and anything you could not fix.
+Return: section titles, figures and tables; every fact you were unsure of or left out, with the reason; every term you defined that isn't in the registry.
 ```
 
 ---
 
-## Final reviewer (fresh eyes, report-only)
+## Consolidation editor · deep · wave 4 (alone on the chapter files)
 
 ```
-You are the final, independent quality reviewer of a finished {N}-page {LANG} PDF: "{PDF PATH}". It explains {SUBJECT} to {READER}. You did not write it. REVIEW ONLY.
-Inputs: the PDF (pdftotext -layout; pdftoppm into {SCRATCH}/final/), source HTML in {REPORT}, research notes (ground truth) in {CWD}/research_notes/{TITLE}/, style rules in {REPORT}/WRITING_GUIDE.md and {SCRATCH}/aiw/avoid-ai-writing/references/patterns.md (or invoke the `avoid-ai-writing` skill in detect mode if it is available). Today is {DATE}.
-Check:
-1. FACTS: at least 50 concrete claims across all chapters (emphasise what a reader will remember) against the notes; flag mismatches, unsupported claims, internal inconsistencies. You may flag claims where the notes themselves look wrong, with reasoning.
-2. READER EXPERIENCE: step-by-step for a newcomer? Jargon before explanation, abrupt jumps, wrong cross-references, TOC page numbers. REPETITION gets particular attention: first run `python3 {SKILL}/scripts/repetition.py {REPORT} --out {SCRATCH}/final/repetition.md` and read it, then read the report in order and list every term that is explained more than once and every topic re-told in several chapters (file, quote, which chapter should keep it). Give section 5 (retold passages) particular weight: the same story in different words counts as repetition. A reader going cover to cover should never be taught the same thing twice.
-3. LANGUAGE: AI-writing tells and quality in {LANG}; quote and propose rewrites; overall verdict on naturalness.
-4. LAYOUT: every page at low res, closer look at anything odd.
-Output P0/P1/P2 findings: page, file, quote/locator, problem, concrete fix. End with a 3–5 sentence assessment.
+You are the consolidation editor for "{REPORT TITLE}" ({LANG}). The chapters were written in parallel by writers who couldn't see each other. Make the report read as if one author wrote it in order, with each term, story and number backstory taught once. While you work, every file in {REPORT}/chapters/ is yours alone.
+
+Read {SKILL}/references/repetition.md, then {GUIDE} (do what "Before you write or edit" says; the registry and the bracket contracts matter most), then the work list {SCRATCH}/repetition.md, then every chapter in order as a reader would.
+
+Work through the list in the order §5, §1, §4, §2. Read each §5 cluster before acting; some share figures for unrelated reasons. For each repeated row:
+1. Find its home: the registry's choice, or, if unregistered, the first chapter where a reader in order needs the full explanation.
+2. Make the home telling the best and most complete one. Move in any detail that only another chapter had.
+3. In every other chapter, reduce it to what the guide's "Teach once" table allows, and remove its margin note there.
+4. Reread the sentences around each cut. Where one no longer follows, add an apposition of eight words or fewer.
+Then reread the bracket chapters against everything before them and hold each to its contract.
+
+Leave facts, SVG figures, check-yourself boxes and answers as they are. If a cut removes a source's only citation in a chapter, remove the source and renumber that chapter's citations. Keep the HTML valid. The build is the orchestrator's.
+
+When done, run `python3 {SKILL}/scripts/repetition.py {REPORT} --out {SCRATCH}/repetition-after.md` and repeat until the gates in repetition.md pass.
+Return: per chapter, what you cut or moved (counts and the notable items); before and after counts for §1, §2, §4, §5; any gate you treat as a deliberate exception, with the reason; every row whose home you changed.
 ```
 
 ---
 
-## Reviser (after final review; per chapter group, disjoint)
+## Visual reviewer · standard · wave 4 (report-only)
 
 ```
-You are revising chapters of the {LANG} PDF report "{REPORT TITLE}" after an independent final review. Edit in place with targeted edits. Your files ONLY: {FILES}.
-Read {REPORT}/WRITING_GUIDE.md. Anti-AI-writing: if a skill named `avoid-ai-writing` is available to you, invoke it with the Skill tool before editing; otherwise read {SCRATCH}/aiw/avoid-ai-writing/SKILL.md and references/patterns.md. Apply the patterns adapted to {LANG} together with the banned-phrase list in WRITING_GUIDE.md. Before returning, audit your own prose against them (detect pass) and fix what you find. Facts must come from the notes in {CWD}/research_notes/{TITLE}/ — never add new facts, except the editor-supplied corrections marked below. Chapter numbers: {CHAPTER LIST}.
-Fix these findings: {NUMBERED, FILE-SPECIFIC LIST — quote the exact text and give the intended fix; mark P0s; for repetition say which chapter owns each topic}.
-General: remove research-process language from reader text (state genuine uncertainty once, neutrally); every figure/table referenced in the text; explain jargon at first use; if you remove the only use of a source, remove it from the list and renumber citations. Keep HTML valid. Don't run the build. Report briefly what you changed.
+Review the figures, tables and page furniture of {PDF PATH}, built from {REPORT}/chapters/*.html with {REPORT}/style.css. Review only; edit nothing in {REPORT}. The text is being edited while you work, so judge what persists: inline SVG figures, tables, boxes, cover, contents, margin notes, typography.
+
+Render pages with `pdftoppm -r 110 -png -f N -l M` into {SCRATCH}/vqa/ and look at them; zoom figures at -r 160. `pdftotext -layout` locates captions.
+
+Look for:
+- in figures: text overlapping lines, shapes or other text; clipped labels; labels under about 6.5 pt; boxes too narrow for their text; arrows pointing the wrong way; missing legends; a flow style used against its meaning ({FLOW CONVENTION}); misleading scales; a part of the system drawn in a different place than in the master figure of chapter 1;
+- in tables: ugly wrapping, numbers split across lines, a header separated from its body;
+- on pages: margin notes overlapping or far from their term, stranded headings, wrong caption numbering, hyphenation and character faults.
+
+You may write a small overlap-check script with Playwright ({PW}) and leave it in {SCRATCH}/vqa/tools/.
+Return a numbered list, P0 to P2. Per item: page, figure or table number, file, locator (the SVG <text> content or the caption), what is wrong, and the concrete fix with coordinates.
+```
+
+---
+
+## Editor · standard · wave 5 (disjoint chapter groups)
+
+```
+You are an independent editor and fact-checker for "{REPORT TITLE}" ({LANG}). Your files, and the only ones you edit: {FILES}.
+
+Read {GUIDE} and do what "Before you write or edit" says; use the avoid-ai-writing rules in edit mode. Then read all notes in {NOTES}/ and the source-check results in {NOTES}/checks/.
+
+1. Facts. Compare every number, date, name and claim in your files with the notes. Where a source check says "differs" or "not on page", the page wins over the note. Correct contradictions; soften or remove what nothing supports. Check that each citation number points to a source that supports the sentence, and check the arithmetic in every worked example and check-yourself answer.
+2. Consistency. Apply these resolutions throughout your files: {KNOWN CONFLICTS}.
+3. Cross-references. Final numbering: {CHAPTER LIST}. Make every chapter reference correct and replace vague pointers with numbers.
+4. Language. Make the smallest edit that removes each mark of machine prose and each listed word, keeping meaning and voice. Normalise spelling as the guide says.
+5. Teach once. Repetition has already been consolidated. Add no margin note or definition for a term homed in another chapter, and reduce any re-explanation you still find as the guide's table says.
+
+In SVG, correct text only, at the same length or shorter. Keep the HTML valid. The build is the orchestrator's.
+Return: factual corrections (before → after, with the note or check that decided it); doubts you couldn't settle; contradictions you noticed in chapters that aren't yours; the number of language edits per file.
+```
+
+---
+
+## Glossary · standard · wave 5
+
+```
+Write the glossary appendix of "{REPORT TITLE}" ({LANG}).
+
+Read {GUIDE} and do what "Before you write or edit" says, then {REPORT}/style.css (.glossary rules), then every file in {REPORT}/chapters/. Collect every term in a margin note (aside.term), every <dfn>, and every abbreviation.
+
+Write {REPORT}/chapters/90_glossary.html:
+<section class="chapter glossary" id="appendix-a" data-appendix="A" data-short="…"> with a chapter-top header and a <dl> holding, in {LANG} alphabetical order, <div class="letter">X</div> then entries of <dt>Term <span class="en">english or expansion</span></dt><dd>Definition in 1–3 sentences, consistent with the home chapter. {See chapter word} N.</dd> where N is the term's home chapter in the registry. {COUNT} entries. No facts that aren't in the chapters.
+
+Edit no chapter file.
+Return: every inconsistency between chapters you noticed (spelling variants, one number stated two ways, differing definitions, wrong chapter pointers), each with file and quote.
+```
+
+---
+
+## Figure fixer · standard · wave 6 (disjoint chapter groups)
+
+```
+Fix figures (inline SVG) and tables in these files only: {FILES}. Read {GUIDE} ("Figures") and {REPORT}/style.css first. {CSS CHANGES SINCE THE REVIEW, e.g. "t-xs grew from 8.5 to 9.2px; new class .halo"}
+
+Fix list, from an independent review. Read the source before each edit; coordinates may have shifted: {NUMBERED LIST}.
+
+After each change, render the figure to PNG on a private test page ({PW}) and look at it; use {SCRATCH}/vqa/tools/ if it exists. Change text only where a fix requires it, and update the caption if you change what a colour or line means. Keep the HTML valid. The build is the orchestrator's.
+Return: per item, what you changed, and anything you couldn't fix.
+```
+
+---
+
+## Final reviewer · deep · wave 7 (fresh context, report-only)
+
+```
+You are the final, independent reviewer of a finished {N}-page PDF in {LANG}: {PDF PATH}. It teaches {SUBJECT} to {READER}. You didn't write it. Review only. Today is {DATE}.
+
+You have: the PDF (pdftotext -layout; pdftoppm into {SCRATCH}/final/), the source HTML in {REPORT}, the research notes and source checks in {NOTES}/, and {GUIDE}. Load the avoid-ai-writing rules as the guide describes and use them in detect mode.
+
+1. Facts. Check at least {50} concrete claims across all chapters against the notes, weighted towards what a reader will remember and repeat. Include every key-figures box and every check-yourself answer. Flag mismatches, unsupported claims and contradictions between chapters. Flag a note itself when you have solid reason to think it is wrong, and give the reason.
+2. Teach once. Run `python3 {SKILL}/scripts/repetition.py {REPORT} --out {SCRATCH}/final/repetition.md`, read it, then read the report in order. List every term explained more than once and every story told in more than one chapter: file, quote, and which chapter should keep it. The same story in different words counts.
+3. Language. Quote each mark of machine prose and each sentence a native reader of {LANG} would stumble on, with a rewrite. Say whether the chapters sound like one author.
+4. Layout. Every page at low resolution, closer where something looks off: near-empty pages, stranded headings, figures far from their reference, contents page numbers.
+
+Return findings as P0, P1 and P2. Per finding: page, file, quote or locator, the problem, the concrete fix. Close with three to five sentences of overall assessment.
+```
+
+---
+
+## Test reader · standard · wave 7 (fresh context, report-only)
+
+```
+You are {READER}. You have been handed a report, "{REPORT TITLE}", and you will read it once, in order, to learn {SUBJECT}.
+
+Read only {PDF TEXT PATH} (the PDF as text). Open nothing else: no notes, no source files, no web. Where you know more about the subject than {READER} would, set that aside and go by what the text has told you so far.
+
+Chapter by chapter, note:
+1. Lost here: each sentence that uses a term or idea the text hasn't yet taught. Quote and page.
+2. Taught twice: anything explained that an earlier chapter already explained.
+3. Check yourself: answer each question from the text alone before reading the answers. Mark each one "answerable", "the text doesn't let me answer", or "the answer disagrees with the text".
+4. In one sentence, what the chapter taught you. Say so if you can't.
+
+At the end: for each outcome listed in the preface, can you now do it? Yes, partly or no, with the reason. Then name the three places where the report lost you most.
+
+Return findings as P0, P1 and P2. Per finding: page, quote, the problem, and what would have helped (an earlier explanation, an apposition, an example, a figure).
+```
+
+---
+
+## Reviser · deep · wave 8 (disjoint chapter groups)
+
+```
+You are revising chapters of "{REPORT TITLE}" ({LANG}) after independent review. Your files, and the only ones you edit: {FILES}.
+
+Read {GUIDE} and do what "Before you write or edit" says. Facts come from the notes in {NOTES}/; the only additions allowed are the corrections marked below. Chapter numbering: {CHAPTER LIST}.
+
+Findings to fix: {NUMBERED, FILE-SPECIFIC LIST — the exact text quoted, the intended fix, P0s marked; for repetition, the chapter that keeps the topic; for "lost here", whether to add an apposition or a pointer}.
+
+Make targeted edits and leave the rest of each chapter as it is. Where a fix removes a source's only citation, remove the source and renumber. Keep the HTML valid. The build is the orchestrator's.
+Return: per finding number, what you changed, or why you didn't.
 ```

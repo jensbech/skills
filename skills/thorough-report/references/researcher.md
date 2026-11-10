@@ -1,51 +1,55 @@
 # How to research a subtopic
 
-You are one of several parallel researchers. Your note will be the **only** factual basis writers may use for their chapters, so precision and honesty about confidence matter more than prose.
+You are one of several researchers working in parallel. Writers may use only what is in the notes, so a note's value lies in its precision and in its honesty about confidence, not in its prose.
 
 ## Method
 
-1. Start broad (one or two searches) to map the subtopic, then go to **primary sources**: regulators, statistics offices, official registers, laws, the organisations' own pages and annual reports. Use trade press for recent events and context, and encyclopedias for definitions.
-2. Prefer fetching the page itself over trusting a search snippet. If you only saw a number in a snippet, mark it `[snippet]`.
-3. Check the newest data. The report's date anchor is "today"; look for this year's and last year's figures, and say explicitly when the newest figure you found is older.
-4. When sources disagree, record both with their URLs and, if you can tell, why (different definitions, scope, year, rounding). Don't silently pick one.
-5. Time-box: roughly 25–60 tool calls. Breadth across the key questions beats depth on one.
-6. If your brief contains an assumption that turns out wrong ("verify X"), say so prominently. These corrections are valuable.
+1. Map the subtopic with one or two broad searches, then go to primary sources: regulators, statistics offices, official registers, laws, the organisations' own pages and annual reports. Use trade press for recent events and encyclopedias for definitions.
+2. Fetch the page. A number seen only in a search snippet is marked `[snippet]`.
+3. Look for this year's and last year's figures. When the newest figure you found is older, say so.
+4. When sources disagree, record both with their URLs and, if you can tell, the reason (definition, scope, year, rounding).
+5. Cover every key question before going deep on one. Budget roughly 25–60 tool calls.
+6. When the brief contains an assumption that turns out to be wrong, say so at the top of your summary.
+7. As you read, collect two things for the teaching: what newcomers to the field usually get wrong, and concrete cases with real figures (a typical household, a named plant, a published example bill).
 
 ## Note format
 
-Write one markdown file at the path you were given:
-
 ```markdown
-# <Subtopic> — research note (as of <date>)
+# <Subtopic>: research note (as of <date>)
 
 ## Takeaway
-5–10 bullet summary of what a writer must know.
+5–10 bullets: what a writer must know.
 
 ## Cited findings
 ### <Key question 1>
-- Fact, with number and date. — [Source name, year](URL)
+- Fact, with number and date. [Source name, year](URL)
 - … (native term in parentheses where relevant)
 
 ### <Key question 2>
 …
 
 ## Inferences
-Reasoned conclusions that are NOT directly stated by a source, each marked as inference with the reasoning.
+Conclusions no source states directly, each marked as an inference, with the reasoning.
 
 ## Conflicts between sources
 - X says A (URL), Y says B (URL); likely because …
+
+## What newcomers get wrong
+- The mistaken belief, what is true, and the source that shows it.
+
+## Concrete cases
+- A case a reader can picture, with its sourced figures.
 
 ## Gaps
 What you looked for and could not verify.
 
 ## Diagram suggestions
-2–4 figures: what boxes/axes/arrows, what data, why it would help a newcomer.
+2–4 figures: the boxes, axes and arrows, the data, and what a newcomer would see in it.
 ```
 
 ## Rules
 
-- Every number has a date and a URL. No URL, no fact (put it in Gaps instead).
-- Use the native-language terms of the subject's home country or field next to English ones. Writers need both.
-- Don't write general background from memory unless you label it "general knowledge" (fine for basic physics, maths and definitions).
-- Never invent names, figures, products or vendors.
-- Return a concise summary to the orchestrator: main findings, corrections to the brief, notable gaps and conflicts, and the file path.
+- Every number has a date and a URL. A fact without a URL goes under Gaps.
+- Give the terms of the subject's own language or field next to the English ones.
+- Background written from memory is labelled "general knowledge" (fine for basic physics, mathematics and definitions).
+- Never invent a name, figure, product or vendor.
