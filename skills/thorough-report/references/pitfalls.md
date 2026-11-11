@@ -12,7 +12,7 @@ Failures seen in real runs that aren't covered by a rule elsewhere in the skill.
 - **Box borders sliced at page bottoms.** `display: inline-block; width: 100%` on boxes (in the skeleton).
 - **Near-empty pages** holding the last few sources or answers of a chapter. Tighten the source list (6.7 pt, line-height 1.26) and recheck. A few short pages at chapter ends are acceptable.
 - **Half-empty pages before large figures.** Move the figure one or two paragraphs later in the HTML. Do it last, when the text is final.
-- **Margin notes stacking** push one onto the next page, away from its term. Keep a paragraph between notes, or move one earlier.
+- **Term notes stacking.** Two notes in a row read as a glossary dropped into the text. Keep a paragraph between notes, or explain one of the terms in its sentence instead.
 - **Variable Google Fonts embed as Type 3.** Harmless for reading and text extraction.
 - **macOS has no `timeout`.** Run long builds with the Bash tool's `run_in_background`.
 
@@ -21,6 +21,9 @@ Failures seen in real runs that aren't covered by a rule elsewhere in the skill.
 - **Research notes can be wrong.** A note described a historical scheme with today's parameters and gave a wrong founding year; both reached the text. Source checkers catch what the cited page contradicts; the final reviewer may challenge the rest. Correct the note along with the chapter, and tell the user which corrections came from your own knowledge.
 - **Editors can introduce errors.** A first-round editor "corrected" a right description of a tariff into a wrong one. This is why the final reviewer starts from fresh context.
 - **Facts the user supplied** (a pasted job ad, an internal document) get flagged as unsourced because they aren't in the notes. The fix is attribution by name, not deletion.
+- **A report built for its subject instead of its reader.** A guide for parents of one-to-three-year-olds came out with one chapter per skill area, a master timeline, a seven-column summary grid with sentences in the cells and a chart that put three studies on one axis. A parent with a 22-month-old had to visit five chapters to assemble their month. Decide the reader's job in Phase 0 and run the entry test (`learning-design.md`).
+- **Figures made because a figure was expected.** Writers fill a figure quota with whatever the notes hold, usually study data. The counts are ceilings, and each planned figure needs its one-sentence message before a writer is asked to draw it.
+- **Chapter plans that overshoot the tier.** Word targets summed to half as much again as the tier allows, and the report came out at twice the pages. Add up the targets in Phase 2.
 - **Duplicate figures.** Two chapters draw the same chart. Keep the one in the topic's home chapter and refer to it from the other.
 - **Ambiguous references.** "Chapter 7" can mean a chapter of a regulation. Write "chapter 7 of the X regulation".
 - **Mechanical checks over-match.** The listed word "landskap" hits inside "utenlandskapasitet". Read `check.py` hits before editing.

@@ -21,7 +21,7 @@ Stories and number backstories cost the reader more than repeated terms do, and 
 
 | Kind | Examples | What "home" means |
 |---|---|---|
-| Term | a role, a tariff component, an abbreviation | the only chapter with a margin note or a definition sentence |
+| Term | a role, a tariff component, an abbreviation | the only chapter with a term note or a definition sentence |
 | Story | a reform, a court case, a crisis, a launch and its uptake, a worked example, the running case | the only chapter that tells it with dates and details |
 | Number backstory | what a key figure counts, its source, why sources disagree | the only chapter that explains the number; others just use it |
 
@@ -31,7 +31,8 @@ Each writer's brief then lists two sets: its **home rows**, which it explains in
 
 **Bracket-chapter contracts.** Paste the ones that apply into the guide, with chapter numbers, and into the brief of the writer who owns each chapter.
 
-- **Overview or summary chapter.** It is a map. Each topic gets at most two sentences and a pointer to its home. No formulas, no source discrepancies, no worked examples. Margin notes only for terms homed here. The master figure carries the detail.
+- **Overview or summary chapter.** It is a map. Each topic gets at most two sentences and a pointer to its home. No formulas, no source discrepancies, no worked examples. Term notes only for terms homed here. The master figure carries the detail. The running case is the exception: chapter 1 is its home and introduces it in full.
+- **Start-here page (guides).** It answers; it doesn't explain. For each situation the reader may arrive with: what to start, what to keep doing and what can wait, a few short lines each, with the chapter number. No reasons, no evidence, no terms that need a note. It is written after the chapters exist, as a list per situation and never as a grid.
 - **History chapter.** It owns events as a sequence. It names today's mechanisms without re-explaining them ("the income cap, chapter 6"). Topical chapters mention a historical event in one sentence with a pointer here, unless the registry gives them the story.
 - **Future chapter.** It starts from current numbers by reference ("from the 2025 production figure in chapter 3") and spends its words on what changes, why, and how sure anyone is.
 - **Reader-specific chapter.** It applies; it doesn't recap. Every paragraph states a consequence for the reader that no earlier chapter stated. Earlier facts appear as short references.

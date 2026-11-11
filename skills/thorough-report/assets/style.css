@@ -1,14 +1,14 @@
 /* ==========================================================================
-   STRUCTURAL SKELETON. The design lead replaces the font import and the
-   DESIGN TOKENS block for every report, and may rewrite any component rule
-   below. Nothing here is "the house style": the values shipped are only a
-   working placeholder so the template renders. See references/design-system.md.
+   READING LAYOUT. The page, the single text column and the heading scale are
+   the same in every report (references/design-system.md, "The reading layout").
+   The design lead replaces the colour tokens, may swap the two font families
+   for another quiet pair, and restyles the cover, the figures and the boxes.
    ========================================================================== */
 
-/* FONT IMPORT: replace with the report's own families (Google Fonts only). */
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&display=block');
+/* FONT IMPORT: a plain text sans and a text serif (Google Fonts only). */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=block');
 
-/* DESIGN TOKENS: replace per report. */
+/* DESIGN TOKENS: colours change per report; sizes and the column stay. */
 :root {
   --ink: #17212b;          /* body text and strong lines */
   --ink-2: #45515c;        /* secondary text */
@@ -30,32 +30,28 @@
   --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
   --series-4: #eda100; --series-5: #e87ba4; --series-6: #008300;
   --muted-fill: #9aa5ae;
-  --sans: 'Archivo', system-ui, sans-serif;     /* headings, labels, figures */
-  --serif: 'Literata', Georgia, serif;          /* body */
-  --body-size: 9.6pt;
-  --body-leading: 1.52;
-  --heading-stretch: 108%;
-  --heading-weight: 800;
-  --main: 118mm;           /* text column */
-  --margin: 44mm;          /* margin-note column; set 0mm for a single-column design */
-  --gutter: 8mm;
+  --sans: 'Source Sans 3', system-ui, sans-serif;   /* headings, labels, figures */
+  --serif: 'Source Serif 4', Georgia, serif;        /* body */
+  --body-size: 11pt;
+  --body-leading: 1.5;
+  --heading-weight: 700;
+  --main: 156mm;           /* the one text column: A4 minus the side margins below */
 }
 
 @page {
   size: A4;
-  margin: 20mm 18mm 22mm 22mm;
+  margin: 22mm 27mm 24mm 27mm;
   @bottom-left {
     content: "";
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-size: 7.5pt;
-    font-stretch: 87%;
     color: #6f7b86;
     vertical-align: top;
     padding-top: 6mm;
   }
   @bottom-right {
     content: counter(page);
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-size: 8pt;
     font-weight: 600;
     color: #17212b;
@@ -117,10 +113,9 @@ td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
   background: var(--paper);
 }
 .cover-diagram { position: absolute; left: 0; right: 0; top: 118mm; width: 210mm; }
-.cover-text { position: absolute; left: 22mm; right: 22mm; top: 30mm; }
+.cover-text { position: absolute; left: 27mm; right: 27mm; top: 30mm; }
 .cover h1 {
   font-family: var(--sans);
-  font-stretch: 112%;
   font-weight: 800;
   font-size: 44pt;
   line-height: 0.98;
@@ -130,7 +125,7 @@ td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
 }
 .cover .subtitle { font-family: var(--serif); font-size: 13pt; line-height: 1.4; max-width: 125mm; color: var(--ink-2); }
 .cover .bottom {
-  position: absolute; left: 22mm; right: 22mm; bottom: 20mm;
+  position: absolute; left: 27mm; right: 27mm; bottom: 20mm;
   font-family: var(--sans); font-size: 8.5pt; color: var(--ink-2);
   display: flex; justify-content: space-between;
   border-top: 0.6pt solid var(--ink); padding-top: 3mm;
@@ -140,8 +135,8 @@ td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
 
 .toc { break-after: page; }
 .toc h2, .preface h2 {
-  font-family: var(--sans); font-stretch: 112%; font-weight: 800; font-size: 22pt;
-  margin: 0 0 6mm; letter-spacing: -0.01em;
+  font-family: var(--sans); font-weight: var(--heading-weight); font-size: 20pt;
+  margin: 0 0 6mm;
 }
 .toc ol { list-style: none; padding: 0; margin: 0; }
 .toc li {
@@ -154,29 +149,28 @@ td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
 .toc li .page { text-align: right; font-weight: 600; font-variant-numeric: lining-nums tabular-nums; }
 
 .preface { break-after: page; }
-.preface .main { max-width: var(--main); }
 .preface h3 { font-family: var(--sans); font-weight: 650; font-size: 10.4pt; margin: 6mm 0 1.5mm; }
 
 /* ---------- Chapters ---------- */
 
-.chapter { break-before: page; padding-right: calc(var(--margin) + var(--gutter)); position: relative; }
-.chapter-top { margin-right: calc(-1 * (var(--margin) + var(--gutter))); margin-bottom: 8mm; }
-.chapter-top .map { display: block; width: 100%; height: auto; margin-bottom: 9mm; }
+.chapter { break-before: page; position: relative; }
+.chapter-top { margin-bottom: 8mm; }
+.chapter-top .map { display: block; width: 100%; height: auto; margin-bottom: 8mm; }
 .chapter-top .nr {
-  font-family: var(--sans); font-weight: 800; font-stretch: 112%; font-size: 11pt;
+  font-family: var(--sans); font-weight: 600; font-size: 10.5pt;
   color: var(--accent); font-variant-numeric: lining-nums; margin-bottom: 1.5mm; display: block;
 }
 .chapter h1 {
-  font-family: var(--sans); font-stretch: var(--heading-stretch); font-weight: var(--heading-weight); font-size: 26pt;
-  line-height: 1.04; letter-spacing: -0.015em; margin: 0 0 5mm; max-width: 150mm; hyphens: manual;
+  font-family: var(--sans); font-weight: var(--heading-weight); font-size: 22pt;
+  line-height: 1.12; margin: 0 0 4.5mm; hyphens: manual;
 }
-.lead { font-size: 11.6pt; line-height: 1.45; color: var(--ink-2); max-width: 140mm; margin-bottom: 0; }
+.lead { font-size: 12pt; line-height: 1.45; color: var(--ink-2); margin-bottom: 0; }
 .chapter h2 {
-  font-family: var(--sans); font-weight: 750; font-size: 13.5pt; line-height: 1.2;
-  margin: 7.5mm 0 2.4mm; break-after: avoid; hyphens: manual;
+  font-family: var(--sans); font-weight: var(--heading-weight); font-size: 14pt; line-height: 1.2;
+  margin: 8mm 0 2.4mm; break-after: avoid; hyphens: manual;
 }
 .chapter h3 {
-  font-family: var(--sans); font-weight: 650; font-size: 10.4pt; line-height: 1.25;
+  font-family: var(--sans); font-weight: 650; font-size: 11pt; line-height: 1.25;
   margin: 5mm 0 1.5mm; break-after: avoid; hyphens: manual;
 }
 .chapter h2 + p, .chapter h3 + p { break-before: avoid; }
@@ -184,45 +178,43 @@ td, th, .facts dt { font-variant-numeric: lining-nums tabular-nums; }
 .chapter li { margin-bottom: 0.3em; }
 .chapter li::marker { color: var(--ink-3); font-family: var(--sans); font-variant-numeric: lining-nums; }
 
-/* ---------- Margin notes ---------- */
+/* ---------- Term notes (in the column, before the paragraph that uses the term) ---------- */
 
 aside.term {
-  float: right; clear: right; width: var(--margin);
-  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
-  margin-top: 0.3em; margin-bottom: 4mm;
-  font-family: var(--sans); font-size: 7.6pt; line-height: 1.38; color: var(--ink-2);
-  border-top: 1.4pt solid var(--ink); padding-top: 1.6mm; hyphens: auto; break-inside: avoid;
+  display: block; margin: 3mm 0 3.5mm; padding: 0.3mm 0 0.3mm 4mm;
+  border-left: 1.4pt solid var(--rule);
+  font-family: var(--sans); font-size: 9pt; line-height: 1.4; color: var(--ink-2);
+  break-inside: avoid; break-after: avoid;
 }
-aside.term b { display: block; font-size: 8.4pt; font-weight: 700; color: var(--ink); margin-bottom: 0.6mm; }
+aside.term b { font-weight: 700; color: var(--ink); margin-right: 0.5em; }
 aside.term .en { font-style: italic; color: var(--ink-3); font-weight: 400; hyphens: manual; }
 
 /* ---------- Boxes ---------- */
 
 .facts, .note, .lens, .check { display: inline-block; width: 100%; break-inside: avoid; }
 .facts { background: var(--tint); padding: 4mm 5mm 3.5mm; margin: 5mm 0; }
-.facts h4, .note h4, .lens h4, .check h4, .answers h4 { font-family: var(--sans); font-weight: 700; font-size: 9.2pt; margin: 0 0 2.5mm; }
+.facts h4, .note h4, .lens h4, .check h4, .answers h4 { font-family: var(--sans); font-weight: 700; font-size: 10pt; margin: 0 0 2.5mm; }
 .facts dl { display: grid; grid-template-columns: max-content 1fr; column-gap: 5mm; row-gap: 1.6mm; margin: 0; }
 .facts dt { font-family: var(--sans); font-weight: 750; font-size: 12pt; line-height: 1.1; text-align: right; }
-.facts dd { margin: 0; font-size: 8.8pt; line-height: 1.35; align-self: center; }
+.facts dd { margin: 0; font-size: 9.4pt; line-height: 1.35; align-self: center; }
 .source-line { font-family: var(--sans); font-size: 7pt; color: var(--ink-3); margin-top: 2.5mm; display: block; }
 .note { border-left: 2.2pt solid var(--ink); padding: 0.5mm 0 0.5mm 4.5mm; margin: 5mm 0; }
 .note p:last-child { margin-bottom: 0; }
 .lens { border: 0.8pt solid var(--flow-c); padding: 3.5mm 4.5mm 3mm; margin: 6mm 0; }
 .lens h4 { color: var(--flow-c); }
-.lens p { font-size: 9pt; }
 .lens p:last-child { margin-bottom: 0; }
 .check { border-top: 1.4pt solid var(--ink); border-bottom: 0.6pt solid var(--ink); padding: 3mm 0 2.5mm; margin: 7mm 0 5mm; }
 .check ol, .answers ol { margin: 0; padding-left: 5mm; }
-.check li { font-size: 9.4pt; margin-bottom: 1.4mm; }
+.check li { margin-bottom: 1.4mm; }
 .answers { margin-top: 4mm; break-inside: avoid; }
-.answers li { font-family: var(--sans); font-size: 7.4pt; line-height: 1.35; color: var(--ink-2); margin-bottom: 0.8mm; }
+.answers li { font-family: var(--sans); font-size: 8pt; line-height: 1.35; color: var(--ink-2); margin-bottom: 0.8mm; }
 
 /* ---------- Figures ---------- */
 
 .fig { margin: 6mm 0; break-inside: avoid; }
-.fig.wide, .table-frame.wide { margin-right: calc(-1 * (var(--margin) + var(--gutter))); }
 .fig svg { display: block; width: 100%; height: auto; overflow: visible; }
-.fig figcaption { font-family: var(--sans); font-size: 8pt; line-height: 1.4; color: var(--ink-2); margin-top: 3mm; max-width: 150mm; }
+.fig.half svg { width: 50%; }
+.fig figcaption { font-family: var(--sans); font-size: 8.6pt; line-height: 1.4; color: var(--ink-2); margin-top: 3mm; }
 .fig figcaption b, table.tab caption b { color: var(--ink); font-weight: 700; margin-right: 0.4em; }
 
 svg text { font-family: var(--sans); fill: var(--ink); }
@@ -230,7 +222,7 @@ svg .t { font-size: 11px; }
 svg .t-s { font-size: 9.5px; fill: var(--ink-2); }
 svg .t-xs { font-size: 9.2px; fill: var(--ink-3); }
 svg .t-bold { font-size: 12px; font-weight: 700; }
-svg .t-h { font-size: 14px; font-weight: 750; font-stretch: var(--heading-stretch); }
+svg .t-h { font-size: 14px; font-weight: 700; }
 svg .t-num { font-size: 18px; font-weight: 750; }
 svg .t-a { fill: var(--flow-a-text); font-weight: 650; }
 svg .t-b { fill: var(--flow-b-text); font-weight: 650; }
@@ -292,8 +284,8 @@ svg.map .map-band-label.on { font-weight: 650; fill: var(--flow-a-text); }
 
 .table-frame { margin: 6mm 0; }
 .table-frame:not(:has(tbody tr:nth-child(11))) { break-inside: avoid; }
-table.tab { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 8.2pt; line-height: 1.35; }
-table.tab caption { caption-side: top; text-align: left; font-size: 8.4pt; color: var(--ink-2); padding-bottom: 2.5mm; }
+table.tab { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 9pt; line-height: 1.35; }
+table.tab caption { caption-side: top; text-align: left; font-size: 8.6pt; color: var(--ink-2); padding-bottom: 2.5mm; }
 table.tab thead th { text-align: left; font-weight: 700; border-bottom: 1.2pt solid var(--ink); padding: 1.6mm 2.4mm 1.6mm 0; vertical-align: bottom; }
 table.tab td { padding: 1.8mm 2.4mm 1.8mm 0; border-bottom: 0.5pt solid var(--rule); vertical-align: top; }
 table.tab tr { break-inside: avoid; }
@@ -310,15 +302,14 @@ table.tab tr.sum td { font-weight: 700; border-top: 1pt solid var(--ink); }
 ol.sources {
   font-family: var(--sans); font-size: 6.7pt; line-height: 1.26; color: var(--ink-2);
   padding-left: 5.5mm; margin: 0; columns: 2; column-gap: 7mm;
-  margin-right: calc(-1 * (var(--margin) + var(--gutter)));
 }
 ol.sources li { margin-bottom: 0.7mm; break-inside: avoid; overflow-wrap: anywhere; hyphens: none; }
 ol.sources li::marker { font-variant-numeric: lining-nums tabular-nums; font-weight: 600; }
 
 /* ---------- Glossary ---------- */
 
-.glossary dl { margin: 0; columns: 2; column-gap: 8mm; margin-right: calc(-1 * (var(--margin) + var(--gutter))); }
-.glossary dt { font-family: var(--sans); font-weight: 700; font-size: 8.8pt; break-after: avoid; margin-top: 2.6mm; }
+.glossary dl { margin: 0; columns: 2; column-gap: 8mm; }
+.glossary dt { font-family: var(--sans); font-weight: 700; font-size: 9.2pt; break-after: avoid; margin-top: 2.6mm; }
 .glossary dt .en { font-weight: 400; font-style: italic; color: var(--ink-3); font-size: 8pt; }
 .glossary dd { margin: 0.4mm 0 0; font-size: 8.4pt; line-height: 1.4; break-before: avoid; break-inside: avoid; }
-.glossary .letter { font-family: var(--sans); font-weight: 800; font-size: 13pt; color: var(--accent); margin-top: 5mm; break-after: avoid; }
+.glossary .letter { font-family: var(--sans); font-weight: 700; font-size: 13pt; color: var(--accent); margin-top: 5mm; break-after: avoid; }

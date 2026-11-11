@@ -1,22 +1,22 @@
 ---
 name: thorough-report
 license: CC0-1.0
-description: Use when the user wants a thoroughly researched, readable PDF to learn from, study or share, from a 10-page briefing to a 150-page handbook, in any language. Triggers include "comprehensive paper", "full report", "deep dive", "primer", "explainer", "handbook", "study guide", "learning material", "briefing", "industry overview", "everything I need to know about X", or a request to research a topic properly and deliver a document, even without the words "report" or "PDF", and especially when someone has to learn a new industry, field, technology, market or domain step by step.
+description: Use when the user wants a thoroughly researched, readable PDF to learn from, study or share, from a 10-page briefing to a 150-page handbook, in any language. Triggers include "comprehensive paper", "full report", "deep dive", "primer", "explainer", "handbook", "study guide", "learning material", "briefing", "industry overview", "everything I need to know about X", "practical guide", "what should I do when", or a request to research a topic properly and deliver a document, even without the words "report" or "PDF", and especially when someone has to learn a new industry, field, technology, market or domain step by step, or needs researched advice for a decision in their own life or work.
 ---
 
 # Thorough report
 
-The product is learning material: a PDF that takes one specific reader from what they know to a working understanding of a subject. You are the orchestrator, which here means editor-in-chief and art director. You frame the job, plan what is taught where, brief subagents, settle conflicts, choose the design and own the build. Subagents do the reading and the writing, so your context stays free for decisions.
+The product is a PDF made for one specific reader and what they will do with it. Some readers are studying a field and need a working understanding of it. Others have a situation of their own and need to know what to do. The reader's job is decided in Phase 0 and shapes everything after it. You are the orchestrator, which here means editor-in-chief and art director. You frame the job, plan what is taught where, brief subagents, settle conflicts, choose the design and own the build. Subagents do the reading and the writing, so your context stays free for decisions.
 
 A finished report meets five standards. Each has one home file; read it at the phase named.
 
 | Standard | Meaning | Home | Read at |
 |---|---|---|---|
-| It teaches | Concepts arrive in dependency order, through one running case, with questions that make the reader use what they read | `references/learning-design.md` | Phase 2 |
+| It serves the reader's job | A study report teaches in dependency order through one running case; a guide is organised by the situation the reader arrives with and answers their question on the first pages. Prose leads; figures and tables are few and each has one message | `references/learning-design.md` | Phase 0 and Phase 2 |
 | Each thing is taught once | Every term, story and number backstory has one home chapter; parallel writers don't re-explain each other | `references/repetition.md` | Phase 2 |
 | It sounds like one person | One voice across all chapters, free of machine-prose habits | `references/writing-guide-template.md` | Phase 2 |
 | Facts are sourced | Every number has a date and a URL that was fetched and compared; nothing is invented to make prose concrete | `references/researcher.md` | Phase 1 |
-| The design belongs to the subject | No house look; each report differs from every earlier one | `references/design-system.md` | Phase 1 |
+| It reads easily | One text column and quiet headings in every report; the subject shows in the cover, the palette and the figure style | `references/design-system.md` | Phase 1 |
 
 `references/pitfalls.md` lists rendering and content failures with their fixes. Read it once before the first build.
 
@@ -63,19 +63,22 @@ Without an Agent tool, run the phases yourself in order with the same files and 
 
 **Ask for depth first**, unless the user already signalled it ("short", "a few pages", "full handbook"; then map it to a tier and say so). Depth sets the agent count, the cost, the time and what the reader ends up holding, so it is the one decision to hand back. Use one AskUserQuestion with the four tiers, your recommendation first and marked "(Recommended)", each option described by what the reader gets and the rough time.
 
-| Tier | Pages | Words | Researchers | Chapters | Figures | Questions per chapter | Glossary | Design directions | Review | Agents / time |
+| Tier | Pages | Words | Researchers | Chapters | Figures, at most | Questions per chapter (study) | Glossary | Design directions | Review | Agents / time |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Briefing | 8–15 | 3–6k | 2–3 | 4–6 short sections | 3–5 | none; 5 at the end | none | 1 | final reviewer | ~8 / 30–60 min |
-| Standard | 25–45 | 10–16k | 3–4 | 6–8 | 8–14 | 3 | 40–70 terms | 2 | waves 4–8, one of each role | ~18 / 1–1.5 h |
-| Comprehensive | 60–90 | 20–30k | 5–6 | 9–11 | 15–25 | 3–4 | full | 3 | waves 4–8, 2–3 per group role | ~28 / 2–2.5 h |
-| Exhaustive | 100–150 | 30–45k | 6–7 | 12–14 | 25–35 | 4–5 | full, 150+ terms | 3 | waves 4–8, 3 per group role | ~35 / 2.5–3.5 h |
+| Briefing | 8–15 | 3–6k | 2–3 | 4–6 short sections | 3 | none; 5 at the end | none | 1 | final reviewer | ~8 / 30–60 min |
+| Standard | 25–45 | 10–16k | 3–4 | 6–8 | 8 | 3 | 40–70 terms | 2 | waves 4–8, one of each role | ~18 / 1–1.5 h |
+| Comprehensive | 60–90 | 20–30k | 5–6 | 9–11 | 14 | 3–4 | full | 3 | waves 4–8, 2–3 per group role | ~28 / 2–2.5 h |
+| Exhaustive | 100–150 | 30–45k | 6–7 | 12–14 | 20 | 4–5 | full, 150+ terms | 3 | waves 4–8, 3 per group role | ~35 / 2.5–3.5 h |
 
-A shorter tier still has to teach. Cut background and history before mechanisms, key numbers and what is changing now. Merge chapters instead of thinning each one. Keep the master figure. Source checking and the language audit run at every tier.
+"Chapters" means numbered chapters at every tier; at Briefing they are short. The upper word figure and the figure count are ceilings, and a chapter has at most one table. A guide takes half the figure ceiling, rounded down (at least one), has no check-yourself questions, and has a glossary only from Comprehensive up.
+
+A shorter tier still has to do its job. Cut background and history before mechanisms, key numbers and what is changing now; in a guide, cut background before advice. Merge chapters instead of thinning each one. Source checking and the language audit run at every tier.
 
 **Decide the rest yourself** and state it in one status line. Ask a second question only when the answer changes the research: an ambiguous subject, an unknown jurisdiction, an unknown output language.
 
+- **The reader's job:** study or guide. Read "The reader's job" in `learning-design.md` before deciding. A study reader is learning a field and will explain it. A guide reader has a situation of their own and wants to know what to do; subjects about people, family, health, habits and everyday decisions are nearly always guides, whatever word the user used for the document. For a guide, also name the entry point: what the reader arrives with (an age, a stage, a budget, a decision).
 - **Reader:** who they are, what they already know, what they don't.
-- **Outcomes:** three to six things the reader will be able to do afterwards (explain a mechanism, read a document of the field, estimate a number, ask the right question in a meeting). Everything later is judged against these.
+- **Outcomes:** three to six things the reader will be able to do afterwards (explain a mechanism, read a document of the field, estimate a number, ask the right question in a meeting; in a guide, choose what to start now, know when to get help). Everything later is judged against these.
 - **Language:** the user's, unless they say otherwise. These instructions are English; the report follows the user.
 - **Date anchor:** today. Every number in the report is dated.
 - **Title:** short, in the output language.
@@ -111,32 +114,36 @@ Create these in the working directory. Run `bash <skill>/scripts/setup.sh <scrat
 
 Launch the researchers and the design lead in one message.
 
-**Research.** Split the subject into as many mutually exclusive, jointly complete subtopics as the tier allows. Useful axes: the technical substrate, the actors and who pays whom, rules and regulators, markets and economics, the end user's experience, the inside of a typical organisation, history, the future, and the reader's own context. Give each researcher five to nine specific questions, including "verify X" for anything you are assuming.
+**Research.** Split the subject into as many mutually exclusive, jointly complete subtopics as the tier allows. Useful axes for a study report: the technical substrate, the actors and who pays whom, rules and regulators, markets and economics, the end user's experience, the inside of a typical organisation, history, the future, and the reader's own context. For a guide: the areas of the reader's life the decisions fall in, what the authorities advise, what the research supports, and what help exists and when to use it. Give each researcher five to nine specific questions, including "verify X" for anything you are assuming.
 
-**Design.** Write `report/report.config.json`, then brief the design lead with what flows through the subject, its main stages, and any artefacts or visual traditions you know of.
+**Design.** Write `report/report.config.json`, then brief the design lead with the reader's job, the subject's world and its artefacts, and what kind of figures you expect (the exact list comes in Phase 2).
 
 When the wave returns:
 
 1. Read the research summaries for corrections to your assumptions and for conflicts between notes.
 2. **Launch the source checkers (wave 2)**, one per note. They run while you plan. Apply every "differs" verdict to the note and to the guide's known-conflicts list.
-3. Look at the design specimens yourself and choose the direction that fits the subject, keeps long text legible, makes the flows read clearly and is memorable; the safest one is rarely it. Install it into `report/` (`style.css`, `cover.html`, a specimen chapter as `chapters/00_example.html`, `DESIGN.md`), build, look, and fix the template before writers depend on it.
+3. Look at the design specimens yourself. Reject any that breaks the reading layout in `design-system.md`: a narrowed text column, headings beside the text, a display or handwriting face inside the report. Among the rest, choose the one whose full page of text is easiest to read and whose cover and palette fit the subject. Install it into `report/` (`style.css`, `cover.html`, a specimen chapter as `chapters/00_example.html`, `DESIGN.md`), build, look, and fix the template before writers depend on it.
 
 ## Phase 2: Plan what is taught where (you)
 
 This phase decides the report's quality more than any other, because parallel writers can only coordinate through what you write down here. Read `learning-design.md` and `repetition.md`, then copy `references/writing-guide-template.md` to `report/WRITING_GUIDE.md` and fill in every `{{…}}`:
 
-1. **Chapter plan**, fundamentals to frontier, with final numbering. Chapter 1 shows the whole system on one page with the master figure. The reader-specific chapter comes last. Briefing and Standard open with a one-page summary, written after the other chapters exist.
-2. **Running case** and the per-chapter outcomes.
-3. **Registry**: every term, story and number backstory, each with one home chapter and one shared line of wording. Check the ladder: no row's home comes after the first chapter that depends on it.
-4. **Bracket-chapter contracts** for the overview, summary, history, future and reader-specific chapters.
-5. **Voice sample**: about 200 words in the report language, written by you, explaining one registry concept the way the whole report should sound.
-6. **Language rules** for the report language, the flow table from `DESIGN.md`, and the known conflicts with their resolutions.
+1. **Chapter plan**, with final numbering.
+   - *Study:* fundamentals to frontier. Chapter 1 shows the whole system on one page with the master figure. The reader-specific chapter comes last. Briefing and Standard open with a one-page summary, written after the other chapters exist; it is unnumbered, counts towards the words and has no questions.
+   - *Guide:* the chapters follow the reader's entry point, one per situation, and each covers the subject's areas in the same order. One closing chapter may hold the principles that cut across situations. The report opens with the start-here page, written after the chapters exist.
+   - Add up the chapters' word targets. The sum stays within the tier's words; the cover, contents, preface and source lists add about four pages on top.
+2. **Running case**, the per-chapter outcomes, and the **three readers of the entry test**: three concrete people, each with a situation and the question they open the report with.
+3. **Figure and table plan.** List every figure and table the report will have, each with the one sentence the reader should take from it. Hold the figures to the tier's ceiling, the tables to one per chapter, and both to the tests in `learning-design.md`; anything without its sentence is cut. Writers draw only what is on this list.
+4. **Registry**: every term, story and number backstory, each with one home chapter and one shared line of wording. Check the ladder: no row's home comes after the first chapter that depends on it.
+5. **Bracket-chapter contracts** for the overview, summary, start-here page, history, future and reader-specific chapters.
+6. **Voice sample**: about 200 words in the report language, written by you, in the section order of the reader's job: for a study report, explaining one registry concept; for a guide, advising on one situation.
+7. **Language rules** for the report language, the flow table from `DESIGN.md` if the figures share encodings, and the known conflicts with their resolutions.
 
-Also write `preface.html`: who the report is for, the outcomes, the reading routes, the flow legend, the date, and a plain statement that Claude compiled it from public sources without expert review.
+Also write `preface.html`, one page at most (in a guide, half a page, since the start-here page follows it): who the report is for, the outcomes, how to find their way in, the legend if there is one, the date, and a plain statement that Claude compiled it from public sources without expert review.
 
 ## Phase 3: Write (wave 3)
 
-Launch one writer per chapter in one message (at Briefing, one writer may take up to three sections). Each brief carries the chapter's outcomes, section bullets, word target, expected figures, primary notes, home rows, neighbour rows, its part of the running case, and its bracket contract if it has one.
+Launch one writer per chapter in one message (at Briefing, one writer may take up to three sections). Each brief carries the reader's job, the chapter's outcomes, section bullets, word ceiling, its figures and tables from the plan (often none), primary notes, home rows, neighbour rows, its part of the running case, and its bracket contract if it has one.
 
 While they write, finish the cover text. When they return, collect their uncertain facts into the known-conflicts list, assign homes to any unregistered terms they reported, delete `00_example.html`, and build.
 
@@ -159,7 +166,7 @@ When the editors finish, launch the **figure fixers** on the visual reviewer's l
 
 ## Phase 6: Review and revise (waves 7 and 8)
 
-Launch the **final reviewer** and the **test reader** together, both with fresh context. The reviewer checks claims against the notes (about 20 at Briefing, 30 at Standard, 50 or more above), language and layout. The test reader reads as the target reader and reports where they got lost and which questions the text doesn't let them answer. At Briefing, the final reviewer does both jobs.
+Launch the **final reviewer** and the **test reader** together, both with fresh context. The reviewer checks claims against the notes (about 20 at Briefing, 30 at Standard, 50 or more above), language and layout. The test reader runs the entry test with the three readers from the guide, then reads as the target reader and reports where they got lost and which questions the text doesn't let them answer. At Briefing, the final reviewer does both jobs, the entry test included. A failed entry test is a P0: the fix is usually the start-here page or the summary, sometimes the chapter order.
 
 Triage the findings, then launch **revisers** on disjoint groups, each with an exact numbered list. At Briefing and Standard, one reviser or your own edits may be enough.
 
@@ -170,7 +177,7 @@ Then rebuild, rerun `check.py` and `repetition.py` (edits can reintroduce repeti
 
 ## Delivery
 
-Compare the page count with the tier. If it overshoots badly, trim; if it undershoots, confirm that every outcome is still served.
+Compare the page count with the tier. If it overshoots, trim, starting with figures, tables and boxes the reader could do without; if it undershoots, confirm that every outcome is still served.
 
 1. Copy the PDF to `reports/<title>.pdf` and open it.
 2. Append the design to `$DESIGN_LOG` in the format given in `design-system.md`.
@@ -178,12 +185,12 @@ Compare the page count with the tier. If it overshoots badly, trim; if it unders
 
 ## Files
 
-- `references/learning-design.md`: outcomes, the concept ladder, the running case, explanation order, check-yourself questions, the test reader.
+- `references/learning-design.md`: the reader's job (study or guide), outcomes, the concept ladder, the running case, section order, when a figure or table earns its place, questions and decide boxes, the entry test and the test reader.
 - `references/repetition.md`: why parallel writers repeat each other, how to build the registry, bracket-chapter contracts, the gates.
 - `references/writing-guide-template.md`: the brief every writer and editor reads; voice, language rules, teach-once rules, components, figure rules.
 - `references/agent-prompts.md`: one prompt per role.
 - `references/researcher.md`: research method and note format.
-- `references/design-system.md`: design dials, novelty rule, quality floor, fixed class names, config schema.
+- `references/design-system.md`: the fixed reading layout, the dials designed per report, novelty rule, quality floor, fixed class names, config schema.
 - `references/pitfalls.md`: rendering and content failures and their fixes.
-- `assets/`: structural skeleton (`style.css`, `cover.html`, `preface.html`, `example-chapter.html`); placeholders, not a style.
+- `assets/`: the reading layout and placeholders for the rest (`style.css`, `cover.html`, `preface.html`, `example-chapter.html`).
 - `scripts/`: `setup.sh`, `build.js`, `contact-sheet.js`, `check.py`, `normalize_numbers.py`, `repetition.py`.

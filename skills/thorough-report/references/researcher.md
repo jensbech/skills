@@ -10,7 +10,8 @@ You are one of several researchers working in parallel. Writers may use only wha
 4. When sources disagree, record both with their URLs and, if you can tell, the reason (definition, scope, year, rounding).
 5. Cover every key question before going deep on one. Budget roughly 25–60 tool calls.
 6. When the brief contains an assumption that turns out to be wrong, say so at the top of your summary.
-7. As you read, collect two things for the teaching: what newcomers to the field usually get wrong, and concrete cases with real figures (a typical household, a named plant, a published example bill).
+7. When the report is a guide, the writers need advice more than data. For each key question, record what the authorities tell people to do, what the research supports and how firmly, and what is left to the person's own choice, and keep the three apart. Record the signs that tell someone it is time to act or to get help.
+8. As you read, collect two things for the teaching: what newcomers to the field usually get wrong, and concrete cases with real figures (a typical household, a named plant, a published example bill).
 
 ## Note format
 
@@ -44,7 +45,7 @@ Conclusions no source states directly, each marked as an inference, with the rea
 What you looked for and could not verify.
 
 ## Diagram suggestions
-2–4 figures: the boxes, axes and arrows, the data, and what a newcomer would see in it.
+None, one or two: only where a picture would show a newcomer something faster than a paragraph. For each, the one sentence the reader should take from it, and the boxes, axes and arrows.
 ```
 
 ## Rules
